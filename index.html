@@ -812,7 +812,7 @@ function openDetail(id){
     milkSelect=`<div style="margin-bottom:8px;font-size:.8rem;color:var(--text2)">Select your milk:</div><div class="milk-selector" id="milkSelector-${r.id}">${MILK_OPTIONS.map(m=>`<span class="milk-btn ${m.id==='whole'?'active':''}" data-milk="${m.id}" onclick="selectMilk('${r.id}','${m.id}')">${m.name}</span>`).join('')}</div><div id="milkStatus-${r.id}" style="font-size:.8rem;color:var(--accent);margin-bottom:12px">🥛 Selected: <b>Whole Milk</b></div>`;
   }
   if(r.sizes.length>1){
-    sizeSelect=`<div style="margin-bottom:8px;font-size:.8rem;color:var(--text2)">Select size:</div><div class="size-selector">${r.sizes.map((s,i)=>`<span class="size-btn ${i===0?'active':''}" onclick="document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${s}</span>`).join('')}</div>`;
+    sizeSelect=`<div style="margin-bottom:8px;font-size:.8rem;color:var(--text2)">Select size:</div><div class="size-selector" id="sizeSelector-${r.id}">${r.sizes.map((s,i)=>`<span class="size-btn ${i===0?'active':''}" data-size="${s}" onclick="selectSize('${r.id}','${s}')">${s}</span>`).join('')}</div><div id="sizeStatus-${r.id}" style="font-size:.8rem;color:var(--accent);margin-bottom:12px">📏 Selected: <b>${r.sizes[0]}</b></div>`;
   }
   
   let imgHtml=r.img?`<img class="detail-img" src="${r.img}" alt="${r.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div style="aspect-ratio:16/9;background:linear-gradient(135deg,#3d2e28,#2a1e1a);border-radius:16px;display:none;align-items:center;justify-content:center;font-size:4rem;margin-bottom:16px">${typeEmoji}</div>`:`<div style="aspect-ratio:16/9;background:linear-gradient(135deg,#3d2e28,#2a1e1a);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:4rem;margin-bottom:16px">${typeEmoji}</div>`;
@@ -876,6 +876,24 @@ function selectMilk(recipeId, milkId){
     let milkName=MILK_OPTIONS.find(m=>m.id===milkId)?.name||milkId;
     let tip=MILK_TIPS[milkId]||'';
     status.innerHTML=`🥛 Selected: <b>${milkName}</b> <span style="color:var(--text2);font-weight:normal;display:block;font-size:.75rem;margin-top:4px">${tip}</span>`;
+  }
+}
+
+// Size selector — updates active state and shows selected size with estimates
+function selectSize(recipeId, sizeName){
+  // Update button active states
+  document.querySelectorAll(`#sizeSelector-${recipeId} .size-btn`).forEach(b=>b.classList.remove('active'));
+  let btn=document.querySelector(`#sizeSelector-${recipeId} .size-btn[data-size="${sizeName}"]`);
+  if(btn)btn.classList.add('active');
+  // Update status display
+  let status=document.getElementById(`sizeStatus-${recipeId}`);
+  if(status){
+    // Parse oz from size name
+    let ozMatch=sizeName.match(/(\d+)oz/);
+    let oz=ozMatch?parseInt(ozMatch[1]):8;
+    let milkOz=Math.max(2,oz-2); // ~2oz for espresso, rest milk
+    let line=milkOz<=6?'CAPPUCCINO':'LATTE';
+    status.innerHTML=`📏 Selected: <b>${sizeName}</b> <span style="color:var(--text2);font-weight:normal;display:block;font-size:.75rem;margin-top:4px">≈ ${milkOz} oz milk — fill Ninja jug to the <b>${line}</b> line</span>`;
   }
 }
 
