@@ -1,0 +1,22 @@
+[
+  {"id": "london-fog", "img_url": "https://inthekitch.net/wp-content/uploads/how-to-make-a-london-fog-final-1.jpg"},
+  {"id": "hot-chocolate", "img_url": "https://sweetlycakes.com/wp-content/uploads/2021/12/chocolatviennois-9blog.jpg"},
+  {"id": "mexican-hot-chocolate", "img_url": "https://www.favfamilyrecipes.com/wp-content/uploads/2022/11/Mexican-hot-chocolate-recipe.jpg"},
+  {"id": "matcha-latte", "img_url": "https://www.aberdeenskitchen.com/wp-content/uploads/2020/04/Matcha-Green-Tea-Latte.jpg"},
+  {"id": "chai-latte", "img_url": "https://vanillaandbean.com/wp-content/uploads/2026/01/ChaiTeaLatteTeaBags-7-680x1020.jpg"},
+  {"id": "turmeric-latte", "img_url": "https://feelgoodfoodie.net/wp-content/uploads/2025/10/Golden-Milk-Turmeric-Latte-06.jpg"},
+  {"id": "vanilla-steamer", "img_url": "https://www.sweetsteep.com/wp-content/uploads/2023/10/vanilla-steamer-683x1024.jpg"},
+  {"id": "caramel-steamer", "img_url": "https://www.littlesugarsnaps.com/wp-content/uploads/2015/10/Bourbon-Caramel-Steamer-2603.jpg"},
+  {"id": "hazelnut-steamer", "img_url": "https://www.upliftingmayhem.com/wp-content/uploads/2017/01/steamersdouble2-1024x750.jpg"},
+  {"id": "chocolate-steamer", "img_url": "https://cdn.bakedbree.com/uploads/2020/11/steam-hot-chocolate-RESHOOT-12-scaled.jpg"},
+  {"id": "iced-matcha-latte", "img_url": "https://thewanderlustkitchen.com/wp-content/uploads/2024/01/easy-simple-iced-green-tea-latte-1200.jpg"},
+  {"id": "iced-london-fog", "img_url": "https://www.heynutritionlady.com/wp-content/uploads/2022/05/Iced_London_Fog_Latte-7.jpg"},
+  {"id": "skinny-vanilla-latte", "img_url": "https://www.thedietchefs.com/wp-content/uploads/2022/11/low-calorie-vanilla-latte.jpg"},
+  {"id": "skinny-caramel-iced-latte", "img_url": "https://www.thedietchefs.com/wp-content/uploads/2022/11/best-skinny-caramel-macchiato-recipe.jpg"},
+  {"id": "skinny-mocha", "img_url": "https://loseweightbyeating.com/wp-content/uploads/2023/11/low-calorie-mocha-latte-recipe-scaled.jpeg"},
+  {"id": "low-cal-cold-brew", "img_url": "https://www.thedietchefs.com/wp-content/uploads/2024/02/Low-calorie-iced-coffee.jpg"},
+  {"id": "vanilla-cold-foam", "img_url": "https://www.mybakingaddiction.com/wp-content/uploads/2023/10/topping-coffee-with-cold-foam-700x1050.jpg"},
+  {"id": "caramel-cold-foam", "img_url": "https://emilylaurae.com/wp-content/uploads/2022/10/salted-caramel-cold-foam-3.jpg"},
+  {"id": "chocolate-cold-foam", "img_url": "https://www.ohhowcivilized.com/wp-content/uploads/chocolate-cold-foam-5.jpg"},
+  {"id": "cinnamon-cold-foam", "img_url": "https://coffeecopycat.com/wp-content/uploads/2023/12/CinnamonCaramelCreamColdBrew-Process6.jpg"}
+]

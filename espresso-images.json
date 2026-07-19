@@ -1,0 +1,38 @@
+[
+  {
+    "id": "espresso",
+    "img_url": "https://media.gettyimages.com/id/1305319097/photo/fresh-espresso-shot-with-beautiful-crema-ready-to-drink.jpg?s=612x612&w=0&k=20&c=3QEBtFxuGPoEyr87AFl1zS-1haWZ_59pSPyhFmHE8MU="
+  },
+  {
+    "id": "espresso-double",
+    "img_url": "https://media.gettyimages.com/id/187592111/photo/a-double-shot-of-espresso-being-poured-from-an-espresso-maker.jpg?s=612x612&w=0&k=20&c=0PcfFItLCvOCAInrV-zFA5YHYYTqS0EFslVIO1lxrsA="
+  },
+  {
+    "id": "ristretto",
+    "img_url": "https://i0.wp.com/1zpresso.coffee/wp-content/uploads/2025/05/espresso-shot.png?w=1920&ssl=1"
+  },
+  {
+    "id": "lungo",
+    "img_url": "https://thecoffeelocator.com/_next/image/?url=/images/guides/what-is-a-lungo/lungo-hero.jpg&w=1920&q=75"
+  },
+  {
+    "id": "americano",
+    "img_url": "https://tasteofartisan.com/wp-content/uploads/2019/05/How-to-Make-Americano-3.jpg"
+  },
+  {
+    "id": "long-black",
+    "img_url": "https://perfectdailygrind.com/wp-content/uploads/2020/08/Long-Black-3.jpg"
+  },
+  {
+    "id": "red-eye",
+    "img_url": "https://cdn.shopify.com/s/files/1/0838/4525/files/red_eye_drink_coffee_1024x1024.jpg?v=1648547023"
+  },
+  {
+    "id": "con-panna",
+    "img_url": "https://www.cottercrunch.com/wp-content/uploads/2023/02/2-Dairy-Free-con-panna-3.jpg"
+  },
+  {
+    "id": "quad-shot-over-ice",
+    "img_url": "https://b4192671.smushcdn.com/4192671/wp-content/uploads/2025/10/4_shots_of_espresso_over_ice_q1nw9u39pa7wfm5zgee0_0-1024x572.png?lossy=2&strip=1&webp=1"
+  }
+]

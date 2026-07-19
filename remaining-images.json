@@ -1,0 +1,94 @@
+[
+  {
+    "id": "cappuccino",
+    "img_url": "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?fm=jpg&q=60&w=3000"
+  },
+  {
+    "id": "cortado",
+    "img_url": "https://www.acouplecooks.com/wp-content/uploads/2021/08/Cortado-002.jpg"
+  },
+  {
+    "id": "macchiato",
+    "img_url": "https://www.acouplecooks.com/wp-content/uploads/2020/10/how-to-make-a-macchiato-008.jpg"
+  },
+  {
+    "id": "latte-macchiato",
+    "img_url": "https://coffeerecipeideas.com/wp-content/uploads/2025/10/coffee-431121_1280.jpg"
+  },
+  {
+    "id": "mocha",
+    "img_url": "https://pickyeaterblog.com/wp-content/uploads/2022/03/easy-healthy-homemade-mocha-latte-recipe-starbucks-copycat-with-whipped-cream.jpg"
+  },
+  {
+    "id": "white-mocha",
+    "img_url": "https://realhousemoms.com/wp-content/uploads/White-Chocolate-Mocha-Latte-HERO-scaled.jpg"
+  },
+  {
+    "id": "caramel-macchiato",
+    "img_url": "https://www.thecookierookie.com/wp-content/uploads/2021/07/how-to-iced-caramel-macchiato-recipe-5-800x1200.jpg"
+  },
+  {
+    "id": "dirty-chai",
+    "img_url": "https://jessicainthekitchen.com/wp-content/uploads/2025/02/Vegan-Dirty-Chai-Latte-13.jpg"
+  },
+  {
+    "id": "cafe-au-lait",
+    "img_url": "https://onehundredcoffee.b-cdn.net/wp-content/uploads/2026/04/Cafe-au-Lait-Recipe-feature-image.webp"
+  },
+  {
+    "id": "breve-latte",
+    "img_url": "https://ibobeans.com/wp-content/uploads/2026/01/breve-latte-espresso-half-and-half-coffee.webp.webp"
+  },
+  {
+    "id": "brew-over-ice",
+    "img_url": "https://realfood.tesco.com/media/images/RFO-RWC-MainHero-Australia-7b808cf0-bde2-4b56-9006-96f42f6df1e1-0-1400x919.jpg"
+  },
+  {
+    "id": "sf-vanilla-latte",
+    "img_url": "https://midwestniceblog.com/wp-content/uploads/2023/05/easy-vanilla-latte-recipe.jpg"
+  },
+  {
+    "id": "sf-caramel-iced-latte",
+    "img_url": "https://healinghomerecipes.co/wp-content/uploads/2023/07/Sugar-Free-Salted-Caramel-Iced-Coffee-1080-%C3%97-1920-px.jpg"
+  },
+  {
+    "id": "vanilla-latte",
+    "img_url": "https://midwestniceblog.com/wp-content/uploads/2023/05/recipe-for-vanilla-latte.jpg"
+  },
+  {
+    "id": "hazelnut-latte",
+    "img_url": "https://coffeetalkies.com/wp-content/uploads/2025/03/Hazelnut-Latte-2-1.jpg"
+  },
+  {
+    "id": "gibraltar",
+    "img_url": "https://blog.lovers.coffee/wp-content/uploads/2022/09/Gibraltar.png"
+  },
+  {
+    "id": "piccolo-latte",
+    "img_url": "https://cdn.shopify.com/s/files/1/0977/3904/7250/files/cafe-piccolo-latte-mostrador-madera-tienda-cafe_3249-3974.jpg"
+  },
+  {
+    "id": "marocchino",
+    "img_url": "https://www.eateveryslice.com/wp-content/uploads/2025/01/1-Eat-Every-Slice-marocchino-coffee-1024x576.webp"
+  },
+  {
+    "id": "hazelnut-mocha",
+    "img_url": "https://www.patrickmaese.com/wp-content/uploads/2020/09/Hazelnut-Mocha-Latte-blog-1.jpg"
+  },
+  {
+    "id": "black-white-mocha",
+    "img_url": "https://www.littlesugarsnaps.com/wp-content/uploads/2022/01/white-chocolate-mocha-cream-1.jpg"
+  },
+  {
+    "id": "mint-latte",
+    "img_url": "https://livesimply.me/wp-content/uploads/2016/12/Homemade-Mocha-Latte-LU5A6091-3-1.jpg"
+  },
+  {
+    "id": "coconut-latte",
+    "img_url": "https://images.squarespace-cdn.com/content/v1/5aa181a3cef3726b20ede49c/1524028948205-1Y7NO0H9P0N7IS7Y4UMT/coconut-cappuccino-latte-vegan-05581.jpg"
+  },
+  {
+    "id": "nutella-latte",
+    "img_url": "https://images.squarespace-cdn.com/content/v1/58e2595c3e00be0ae51453aa/1497491256551-BWQDWO7E6XK28JLFFN95/nutella-latte-recipe.jpg"
+  }
+]

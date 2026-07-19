@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Ninja Luxe Cafe — Recipe & Guide</title>
+<style>
+/* ── RESET & BASE ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;background:#1a1210;color:#f5ede4;line-height:1.5;padding-bottom:80px}
+img{max-width:100%;height:auto;display:block;border-radius:12px}
+a{color:#d4a574;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── COLORS ── */
+:root{
+  --bg:#1a1210;
+  --bg2:#2a1e1a;
+  --bg3:#362822;
+  --accent:#d4a574;
+  --accent2:#e8c39e;
+  --text:#f5ede4;
+  --text2:#c4b5ab;
+  --gold:#f0c674;
+  --green:#7ec8a3;
+  --card:#2a1e1a;
+  --card-border:#3d2e28;
+  --shadow:0 4px 24px rgba(0,0,0,.3);
+}
+
+/* ── NAV ── */
+nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#1f1512;border-top:1px solid #3d2e28;display:flex;justify-content:space-around;padding:6px 0 env(safe-area-inset-bottom,6px) 0;backdrop-filter:blur(12px);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+nav a{display:flex;flex-direction:column;align-items:center;gap:1px;padding:8px 12px;color:#8a7a70;font-size:10px;transition:.2s;border-radius:8px;text-decoration:none!important;cursor:pointer;min-width:56px;min-height:44px;justify-content:center;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+nav a svg{width:24px;height:24px}
+nav a:active{opacity:.7}
+nav a.active{color:var(--accent);background:#362822}
+nav a.active svg{color:var(--accent)}
+
+/* ── HEADER ── */
+header{background:linear-gradient(135deg,#2a1e1a,#3d2e28);padding:20px 16px 16px;text-align:center;position:sticky;top:0;z-index:50;border-bottom:1px solid var(--card-border)}
+header h1{font-size:1.3rem;color:var(--accent);margin-bottom:2px}
+header p{font-size:.8rem;color:var(--text2)}
+
+/* ── PAGE SYSTEM ── */
+.page{display:none;padding:16px;max-width:640px;margin:0 auto}
+.page.active{display:block}
+
+/* ── SEARCH ── */
+.search-bar{display:flex;gap:8px;margin-bottom:16px}
+.search-bar input{flex:1;padding:12px 16px;border-radius:12px;border:1px solid var(--card-border);background:var(--bg2);color:var(--text);font-size:1rem;outline:none;transition:.2s}
+.search-bar input:focus{border-color:var(--accent)}
+.search-bar input::placeholder{color:#6a5a50}
+
+/* ── FILTER CHIPS ── */
+.filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:16px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.filters::-webkit-scrollbar{display:none}
+.filter-chip{padding:6px 14px;border-radius:20px;border:1px solid var(--card-border);background:var(--bg2);color:var(--text2);font-size:.8rem;white-space:nowrap;cursor:pointer;transition:.2s;flex-shrink:0;min-height:32px;display:flex;align-items:center}
+.filter-chip.active{background:var(--accent);color:#1a1210;border-color:var(--accent);font-weight:600}
+
+/* ── RECIPE CARDS ── */
+.recipe-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.recipe-card{background:var(--card);border:1px solid var(--card-border);border-radius:16px;overflow:hidden;transition:.2s;cursor:pointer;position:relative}
+.recipe-card:active{transform:scale(.97)}
+.recipe-card .img{width:100%;aspect-ratio:4/3;object-fit:cover;background:#362822}
+.recipe-card .body{padding:10px 12px 12px}
+.recipe-card .body h3{font-size:.9rem;margin-bottom:2px;color:var(--text)}
+.recipe-card .body .meta{font-size:.72rem;color:var(--text2);display:flex;gap:8px;flex-wrap:wrap}
+.recipe-card .badge{position:absolute;top:8px;right:8px;background:var(--bg);color:var(--gold);padding:3px 8px;border-radius:8px;font-size:.65rem;font-weight:600}
+.recipe-card .fav-btn{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.5);border:none;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;backdrop-filter:blur(4px);color:#fff}
+.recipe-card .fav-btn.faved{color:var(--gold)}
+.recipe-card .rating{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.6);border-radius:8px;padding:2px 8px;font-size:.7rem;color:var(--gold);backdrop-filter:blur(4px)}
+
+/* ── FEATURED ── */
+.featured-section{margin-bottom:20px}
+.section-header{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.section-header h3{font-size:1.05rem;color:var(--text)}
+.section-sub{font-size:.75rem;color:var(--text2)}
+.featured-scroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.featured-scroll::-webkit-scrollbar{display:none}
+.featured-scroll .featured-card{flex:0 0 140px;background:var(--card);border:1px solid var(--card-border);border-radius:14px;overflow:hidden;cursor:pointer;transition:.2s}
+.featured-scroll .featured-card:active{transform:scale(.95)}
+.featured-scroll .featured-card .fc-img{aspect-ratio:1;background:linear-gradient(135deg,#3d2e28,#2a1e1a);display:flex;align-items:center;justify-content:center;font-size:2.2rem}
+.featured-scroll .featured-card .fc-body{padding:8px 10px 10px}
+.featured-scroll .featured-card .fc-body h4{font-size:.78rem;color:var(--text);margin-bottom:2px}
+.featured-scroll .featured-card .fc-body .fc-meta{font-size:.65rem;color:var(--text2)}
+.browse-section{border-top:1px solid var(--card-border);padding-top:16px}
+
+/* ── INGREDIENT CARD ── */
+.ingr-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ingr-card{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:16px;text-align:center}
+.ingr-card .icon{font-size:2rem;margin-bottom:8px}
+.ingr-card h3{font-size:.85rem;color:var(--accent);margin-bottom:4px}
+.ingr-card p{font-size:.72rem;color:var(--text2)}
+
+/* ── RECIPE DETAIL ── */
+.back-btn{background:none;border:none;color:var(--accent);font-size:.9rem;cursor:pointer;padding:8px 0;display:inline-flex;align-items:center;gap:6px;margin-bottom:12px;min-height:44px}
+.detail-img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;margin-bottom:16px;background:#362822}
+.detail-title{font-size:1.4rem;color:var(--text);margin-bottom:4px}
+.detail-meta{display:flex;gap:12px;font-size:.8rem;color:var(--text2);margin-bottom:16px;flex-wrap:wrap}
+.detail-meta span{background:var(--bg2);padding:4px 12px;border-radius:8px}
+.detail-rating{display:flex;gap:4px;margin-bottom:16px}
+.detail-rating .star{cursor:pointer;font-size:1.4rem;color:#4a3a30;transition:.15s}
+.detail-rating .star.active{color:var(--gold)}
+.detail-section{margin-bottom:20px}
+.detail-section h3{font-size:1rem;color:var(--accent);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.detail-section ul{padding-left:20px;color:var(--text2);font-size:.88rem;line-height:1.8}
+.detail-section li{list-style:disc}
+.detail-section ol{padding-left:20px;color:var(--text2);font-size:.88rem;line-height:1.8}
+.detail-section ol li{list-style:decimal}
+.source-link{display:inline-flex;align-items:center;gap:4px;color:var(--accent);font-size:.8rem;margin-top:12px;padding:8px 16px;border:1px solid var(--accent);border-radius:10px;text-decoration:none!important;transition:.2s;min-height:44px}
+.source-link:hover{background:var(--accent);color:#1a1210}
+
+/* ── STAPLE INGREDIENTS ── */
+.staple-list{display:flex;flex-direction:column;gap:12px}
+.staple-item{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px}
+.staple-item .icon{font-size:1.8rem;width:40px;text-align:center}
+.staple-item .info{flex:1}
+.staple-item .info h4{font-size:.85rem;color:var(--text);margin-bottom:2px}
+.staple-item .info p{font-size:.75rem;color:var(--text2)}
+.staple-item .tag{background:var(--bg3);color:var(--accent);font-size:.7rem;padding:3px 10px;border-radius:10px;white-space:nowrap}
+
+/* ── USER GUIDE ── */
+.guide-section{margin-bottom:28px}
+.guide-section h2{font-size:1.1rem;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.guide-section > p{font-size:.82rem;color:var(--text2);margin-bottom:12px;line-height:1.7}
+.guide-card{background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:14px;margin-bottom:10px}
+.guide-card h4{font-size:.85rem;color:var(--accent2);margin-bottom:4px}
+.guide-card p{font-size:.78rem;color:var(--text2);line-height:1.6}
+.guide-card .img-placeholder{width:100%;aspect-ratio:16/9;border-radius:10px;margin-bottom:8px;background:linear-gradient(135deg,#3d2e28,#2a1e1a);display:flex;align-items:center;justify-content:center;color:#6a5a50;font-size:.8rem}
+.guide-card img{width:100%;border-radius:10px;margin-bottom:8px}
+
+/* ── FAVORITES ── */
+.empty-state{text-align:center;padding:40px 20px;color:var(--text2)}
+.empty-state .icon{font-size:3rem;margin-bottom:12px;opacity:.4}
+.empty-state p{font-size:.85rem}
+
+/* ── INTRO ── */
+.intro-card{background:linear-gradient(135deg,#3d2e28,#2a1e1a);border-radius:16px;padding:16px;margin-bottom:20px}
+.intro-card h2{font-size:1rem;color:var(--accent);margin-bottom:6px}
+.intro-card p{font-size:.8rem;color:var(--text2);line-height:1.6}
+
+/* ── SIZE SELECTOR ── */
+.size-selector{display:flex;gap:6px;margin-bottom:16px}
+.size-btn{flex:1;padding:8px;border-radius:10px;border:1px solid var(--card-border);background:var(--bg2);color:var(--text2);font-size:.75rem;cursor:pointer;transition:.2s;text-align:center;min-height:44px;display:flex;align-items:center;justify-content:center}
+.size-btn.active{background:var(--accent);color:#1a1210;border-color:var(--accent);font-weight:600}
+.milk-selector{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.milk-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--card-border);background:var(--bg2);color:var(--text2);font-size:.75rem;cursor:pointer;transition:.2s;min-height:44px;display:flex;align-items:center}
+.milk-btn.active{background:var(--accent);color:#1a1210;border-color:var(--accent);font-weight:600}
+
+/* ── RESPONSIVE ── */
+@media(min-width:768px){
+  body{padding-bottom:0;padding-top:70px}
+  nav{bottom:auto;top:0;border-top:none;border-bottom:1px solid #3d2e28;padding:4px 0;position:fixed}
+  header{display:none}
+  .page{padding-top:20px}
+  .recipe-grid{grid-template-columns:1fr 1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>☕ Ninja Luxe Cafe</h1>
+  <p>Recipes & Machine Guide</p>
+</header>
+
+<!-- ════════════════════ PAGES ════════════════════ -->
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="intro-card">
+    <h2>☕ Welcome to Your Home Cafe</h2>
+    <p>Your Ninja Luxe Cafe can make everything from a perfect espresso to creamy lattes, cold brew, and more. Browse our collection of 85+ recipes, save your favorites, and learn how to get the most out of your machine.</p>
+  </div>
+  <div id="featuredSection" class="featured-section">
+    <div class="section-header">
+      <h3>🔥 Recommended</h3>
+      <span class="section-sub" id="featuredSub">Popular picks to get you started</span>
+    </div>
+    <div class="featured-scroll" id="featuredGrid"></div>
+  </div>
+  <div id="browseSection" class="browse-section">
+    <div class="section-header">
+      <h3>📋 All Drinks</h3>
+    </div>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search drinks..." oninput="renderHome()">
+    </div>
+    <div class="filters" id="homeFilters"></div>
+    <div class="recipe-grid" id="homeGrid"></div>
+  </div>
+</div>
+
+<!-- RECIPES PAGE -->
+<div id="page-recipes" class="page">
+  <div class="search-bar">
+    <input type="text" id="recipesSearchInput" placeholder="Search drinks..." oninput="renderRecipes()">
+  </div>
+  <div class="filters" id="recipesFilters"></div>
+  <div class="recipe-grid" id="recipesGrid"></div>
+</div>
+
+<!-- FAVORITES -->
+<div id="page-favorites" class="page">
+  <h2 style="font-size:1.1rem;color:var(--accent);margin-bottom:16px">⭐ Your Favorites</h2>
+  <div id="favsContent"></div>
+</div>
+
+<!-- RECIPE DETAIL -->
+<div id="page-detail" class="page">
+  <button class="back-btn" onclick="closeDetail()">← Back</button>
+  <div id="detailContent"></div>
+</div>
+
+<!-- STAPLE INGREDIENTS -->
+<div id="page-ingredients" class="page">
+  <h2 style="font-size:1.1rem;color:var(--accent);margin-bottom:16px">🥘 Staple Ingredients</h2>
+  <p style="font-size:.82rem;color:var(--text2);margin-bottom:16px;line-height:1.6">Stock your home bar with these essentials to make the widest variety of drinks with your Ninja Luxe Cafe.</p>
+  <div id="stapleContent"></div>
+</div>
+
+<!-- USER GUIDE -->
+<div id="page-guide" class="page">
+  <h2 style="font-size:1.1rem;color:var(--accent);margin-bottom:16px">📖 Machine User Guide</h2>
+  <p style="font-size:.82rem;color:var(--text2);margin-bottom:16px;line-height:1.6">Everything you need to know about your Ninja Luxe Cafe — from setup to advanced settings.</p>
+  <div id="guideContent"></div>
+</div>
+
+<!-- ════════════════════ NAV ════════════════════ -->
+<nav>
+  <a href="#" class="active" data-page="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </a>
+  <a href="#" data-page="recipes">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    Recipes
+  </a>
+  <a href="#" data-page="favorites">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    Favorites
+  </a>
+  <a href="#" data-page="ingredients">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    Pantry
+  </a>
+  <a href="#" data-page="guide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Guide
+  </a>
+</nav>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+
+const RECIPES = [
+  // ── Classic Espresso ──
+  {id:'espresso',name:'Espresso (Single)',type:'espresso',milk:'none',sizes:['Single'],base:'Espresso',desc:'The foundation of all espresso drinks. Rich, concentrated coffee with a golden crema layer.',ingredients:['10-12g fresh coffee beans','Filtered water'],steps:['Fill the hopper with fresh beans','Select ESPRESSO mode on the machine','Use the Double basket (10-12g)','Let Barista Assist recommend grind size','The machine grinds, doses, and tamps','Place your cup and press BREW','Enjoy immediately'],source:'https://www.sharkninja.com/ninja-luxe-cafe-premier-series-espresso-machine-drip-coffee-maker-cold-brew-machine/ES601.html',img:'https://media.gettyimages.com/id/1305319097/photo/fresh-espresso-shot-with-beautiful-crema-ready-to-drink.jpg?s=612x612&w=0&k=20&c=3QEBtFxuGPoEyr87AFl1zS-1haWZ_59pSPyhFmHE8MU='},
+  {id:'espresso-double',name:'Espresso (Double)',type:'espresso',milk:'none',sizes:['Double'],base:'Espresso',desc:'A double shot — the standard base for most milk drinks. More body, more crema, more caffeine.',ingredients:['18-20g fresh coffee beans','Filtered water'],steps:['Fill hopper with fresh beans','Select ESPRESSO mode','Use the Luxe basket (18-20g) for double shots','Let Barista Assist set the grind','Machine grinds, doses, and tamps','Place cup and press BREW','Serve immediately'],source:'https://www.sharkninja.com/ninja-luxe-cafe-premier-series-espresso-machine-drip-coffee-maker-cold-brew-machine/ES601.html',img:'https://media.gettyimages.com/id/187592111/photo/a-double-shot-of-espresso-being-poured-from-an-espresso-maker.jpg?s=612x612&w=0&k=20&c=0PcfFItLCvOCAInrV-zFA5YHYYTqS0EFslVIO1lxrsA='},
+  {id:'ristretto',name:'Ristretto',type:'espresso',milk:'none',sizes:['Single','Double'],base:'Short Espresso',desc:'A restricted shot — shorter and more concentrated than espresso. Half the water, double the intensity. Sweeter and syrupy.',ingredients:['18-20g fresh coffee beans','Filtered water'],steps:['Use the Luxe basket with 18-20g beans','Select ESPRESSO mode','Use a finer grind than normal espresso (2-3 clicks finer)','Stop the shot early — aim for 15-20ml in 15-20 seconds','You want the first, sweetest part of the extraction'],source:'https://clivecoffee.com/blogs/learn/making-cafe-quality-drinks-at-home',img:'https://i0.wp.com/1zpresso.coffee/wp-content/uploads/2025/05/espresso-shot.png?w=1920&ssl=1'},
+  {id:'lungo',name:'Lungo',type:'espresso',milk:'none',sizes:['Single','Double'],base:'Long Espresso',desc:'A "long" espresso — more water pulled through the same amount of coffee. More bitter, more caffeine, closer to drip coffee.',ingredients:['18-20g fresh coffee beans','Filtered water'],steps:['Use the Luxe basket with 18-20g beans','Select ESPRESSO mode','Use a slightly coarser grind than espresso','Let the shot run longer — aim for 50-60ml','The extra water extracts more bitterness and caffeine'],source:'https://coffeegeek.com/reviews/fullreview/ninja-luxe-cafe-premier-full-review/',img:'https://thecoffeelocator.com/_next/image/?url=/images/guides/what-is-a-lungo/lungo-hero.jpg&w=1920&q=75'},
+  {id:'americano',name:'Americano',type:'espresso',milk:'none',sizes:['Regular(8oz)','Large(12oz)'],base:'Espresso + Hot Water',desc:'Espresso diluted with hot water for a smooth, full-bodied coffee similar to drip but with espresso complexity.',ingredients:['Double espresso shot (18-20g beans)','6-8 oz hot water'],steps:['Pull a double espresso shot','Heat water separately or run a blank shot for hot water','Add hot water to the espresso','Optional: adjust ratio to taste (1:2 to 1:3)'],source:'https://coffeegeek.com/reviews/fullreview/ninja-luxe-cafe-premier-full-review/',img:'https://tasteofartisan.com/wp-content/uploads/2019/05/How-to-Make-Americano-3.jpg'},
+  {id:'long-black',name:'Long Black',type:'espresso',milk:'none',sizes:['Regular(8oz)','Large(12oz)'],base:'Hot Water + Espresso',desc:'The Australian cousin of the Americano — espresso poured over hot water, not the other way around. Preserves the crema on top for a fuller flavor.',ingredients:['Double espresso shot (18-20g beans)','4-6 oz hot water'],steps:['Fill your cup with 4-6 oz hot water','Pull a double espresso shot directly into the hot water','Watch the crema form on top — that is the signature','Less water than an Americano for a stronger flavor'],source:'https://clivecoffee.com/blogs/learn/making-cafe-quality-drinks-at-home',img:'https://perfectdailygrind.com/wp-content/uploads/2020/08/Long-Black-3.jpg'},
+  {id:'red-eye',name:'Red Eye',type:'espresso',milk:'none',sizes:['Regular(10oz)','Large(14oz)'],base:'Drip Coffee + Espresso',desc:'A drip coffee "charged" with a shot of espresso. Maximum caffeine. For when you really need to wake up.',ingredients:['8-12 oz drip coffee','Single espresso shot'],steps:['Select COFFEE mode and brew a cup of drip coffee','Remove the drip coffee, insert the portafilter','Pull a single espresso shot directly into the drip coffee','Stir gently and hold on tight'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://cdn.shopify.com/s/files/1/0838/4525/files/red_eye_drink_coffee_1024x1024.jpg?v=1648547023'},
+  
+  // ── Milk Drinks ──
+  {id:'latte',name:'Latte',type:'milk',milk:'all',sizes:['Small(8oz)','Regular(12oz)','Large(16oz)'],base:'Espresso + Steamed Milk',desc:'A creamy, milk-forward drink with a thin layer of microfoam. The most popular cafe drink.',ingredients:['Double espresso shot','6-8 oz milk of choice','Optional: flavored syrup'],steps:['Pull a double espresso shot into your cup','Fill the milk jug to the LATTE line','Select the milk frother with STEAMED MILK setting','Froth milk until silky (150F / 65C)','Pour milk over espresso, holding back foam with a spoon','Finish with a small dollop of foam on top'],source:'https://www.wholelattelove.com/blogs/support-articles/drink-recipes-and-ratios',img:'https://coffeebros.com/cdn/shop/articles/latte-art.jpg'},
+  {id:'cappuccino',name:'Cappuccino',type:'milk',milk:'all',sizes:['Small(6oz)','Regular(8oz)'],base:'Espresso + Steamed Milk + Foam',desc:'Equal parts espresso, steamed milk, and foam. A drier, foamier drink than a latte with a bold coffee flavor.',ingredients:['Double espresso shot','3-4 oz milk of choice','Optional: cocoa or cinnamon dusting'],steps:['Pull a double espresso shot','Fill milk jug to the CAPPUCCINO line','Select THICK FROTH on the frother','Froth until thick foam forms','Spoon thick foam over the espresso','Finish with a dusting of cocoa or cinnamon if desired'],source:'https://coffeebros.com/blogs/coffee/cappuccino-vs-latte',img:'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?fm=jpg&q=60&w=3000'},
+  {id:'flat-white',name:'Flat White',type:'milk',milk:'all',sizes:['Small(6oz)','Regular(8oz)'],base:'Espresso + Microfoam',desc:'An Australian classic — double ristretto with silky microfoam. Less foam than a cappuccino, more coffee-forward than a latte.',ingredients:['Double ristretto (or espresso) shot','4-5 oz milk of choice'],steps:['Pull a double ristretto (or espresso) shot','Fill milk jug with 4-5 oz milk','Select STEAMED MILK for the finest microfoam','Swirl milk until glossy with no visible bubbles','Pour in a steady stream, finishing with a smooth white surface'],source:'https://clivecoffee.com/blogs/learn/making-cafe-quality-drinks-at-home',img:'https://coffeebros.com/cdn/shop/articles/flat-white.jpg'},
+  {id:'cortado',name:'Cortado',type:'milk',milk:'all',sizes:['Small(4oz)'],base:'Espresso + Warm Milk',desc:'A Spanish favorite — equal parts espresso and warm milk. Served in a small glass. No foam, just velvety milk.',ingredients:['Double espresso shot','2 oz warm milk'],steps:['Pull a double espresso shot','Steam about 2 oz of milk (minimal foam)','Pour milk over espresso in equal parts','Serve in a 4oz glass or small cup'],source:'https://completehomebarista.com/guides/espresso-milk-ratio-chart/',img:'https://www.acouplecooks.com/wp-content/uploads/2021/08/Cortado-002.jpg'},
+  {id:'macchiato',name:'Espresso Macchiato',type:'milk',milk:'all',sizes:['Small'],base:'Espresso + Milk Mark',desc:'Espresso "stained" with a small amount of milk and foam. Strong, concentrated, and quick.',ingredients:['Double espresso shot','1 tbsp steamed milk','Small dollop of foam'],steps:['Pull a double espresso shot','Froth a small amount of milk for 5 seconds','Add a teaspoon of steamed milk to the espresso','Top with a small dollop of foam'],source:'https://clivecoffee.com/blogs/learn/making-cafe-quality-drinks-at-home',img:'https://www.acouplecooks.com/wp-content/uploads/2020/10/how-to-make-a-macchiato-008.jpg'},
+  {id:'latte-macchiato',name:'Latte Macchiato',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Milk + Espresso Mark',desc:'The reverse of an espresso macchiato — steamed milk "stained" with espresso. Layered and beautiful.',ingredients:['Double espresso shot','8-10 oz milk of choice'],steps:['Froth milk with STEAMED MILK setting and pour into a tall glass','Let the foam settle for 30 seconds','Pull a double espresso shot','Slowly pour espresso through the center of the foam','You will see distinct layers form — milk, espresso, foam'],source:'https://www.wholelattelove.com/blogs/support-articles/drink-recipes-and-ratios',img:'https://coffeerecipeideas.com/wp-content/uploads/2025/10/coffee-431121_1280.jpg'},
+  {id:'mocha',name:'Mocha',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Chocolate + Milk',desc:'A chocolate lover\'s latte. Rich espresso meets sweet chocolate, topped with steamed milk and optionally whipped cream.',ingredients:['Double espresso shot','2 tbsp chocolate syrup or cocoa','6-8 oz milk of choice','Whipped cream (optional)'],steps:['Add chocolate syrup to your cup','Pull a double espresso shot directly over the chocolate','Stir to combine','Froth milk on STEAMED MILK setting','Pour milk over the espresso-chocolate mixture','Top with whipped cream and chocolate shavings'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://pickyeaterblog.com/wp-content/uploads/2022/03/easy-healthy-homemade-mocha-latte-recipe-starbucks-copycat-with-whipped-cream.jpg'},
+  {id:'white-mocha',name:'White Mocha',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + White Chocolate + Milk',desc:'A sweeter, creamier mocha made with white chocolate. Lighter and more dessert-like than a classic mocha.',ingredients:['Double espresso shot','2 tbsp white chocolate sauce','6-8 oz milk of choice','Whipped cream (optional)'],steps:['Add white chocolate sauce to your cup','Pull a double espresso shot over the white chocolate','Stir well to melt and combine','Froth milk on STEAMED MILK setting','Pour milk over the mixture','Optional: top with whipped cream'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://realhousemoms.com/wp-content/uploads/White-Chocolate-Mocha-Latte-HERO-scaled.jpg'},
+  {id:'caramel-macchiato',name:'Caramel Macchiato',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Vanilla + Milk + Caramel',desc:'Vanilla syrup and milk are topped with espresso, then drizzled with caramel. Sweet, layered, and indulgent.',ingredients:['Double espresso shot','2 pumps vanilla syrup','6-8 oz milk of choice','Caramel sauce drizzle'],steps:['Add vanilla syrup to your cup','Froth milk on STEAMED MILK setting and pour over syrup','Pull a double espresso shot','Slowly pour espresso through the center of the milk','Drizzle caramel sauce on top in a crosshatch pattern'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.thecookierookie.com/wp-content/uploads/2021/07/how-to-iced-caramel-macchiato-recipe-5-800x1200.jpg'},
+  {id:'dirty-chai',name:'Dirty Chai Latte',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Chai + Espresso + Milk',desc:'The best of both worlds — spicy chai meets bold espresso. A "dirty" chai for double the kick.',ingredients:['Double espresso shot','2 oz chai concentrate','6 oz milk of choice','Optional: cinnamon or cardamom'],steps:['Add chai concentrate to your cup','Pull a double espresso shot over the chai','Froth milk on STEAMED MILK setting','Pour milk over the chai-espresso mixture','Sprinkle with cinnamon'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://jessicainthekitchen.com/wp-content/uploads/2025/02/Vegan-Dirty-Chai-Latte-13.jpg'},
+  {id:'cafe-au-lait',name:'Cafe au Lait',type:'milk',milk:'all',sizes:['Regular(10oz)','Large(14oz)'],base:'Coffee + Steamed Milk',desc:'A French classic — equal parts drip coffee and steamed milk. Simpler and less intense than a latte.',ingredients:['6 oz drip coffee','6 oz milk of choice'],steps:['Select COFFEE mode and brew a cup of drip coffee','Froth milk on STEAMED MILK setting','Pour milk and coffee together in equal parts','Serve in a wide bowl-style cup for authenticity'],source:'https://www.wholelattelove.com/blogs/support-articles/drink-recipes-and-ratios',img:'https://onehundredcoffee.b-cdn.net/wp-content/uploads/2026/04/Cafe-au-Lait-Recipe-feature-image.webp'},
+  {id:'breve-latte',name:'Breve Latte',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Half & Half',desc:'An ultra-rich latte made with half-and-half instead of milk. Creamy, decadent, and indulgent.',ingredients:['Double espresso shot','6-8 oz half-and-half','Optional: vanilla syrup'],steps:['Pull a double espresso shot','Fill milk jug with half-and-half to desired line','Select STEAMED MILK on the frother','Froth until thick and creamy (half-and-half froths beautifully)','Pour over the espresso','Caution: this is a calorie bomb but worth every sip'],source:'https://completehomebarista.com/guides/espresso-milk-ratio-chart/',img:'https://ibobeans.com/wp-content/uploads/2026/01/breve-latte-espresso-half-and-half-coffee.webp.webp'},
+
+  // ── Iced Drinks ──
+  {id:'iced-latte',name:'Iced Latte',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Cold Milk + Ice',desc:'A refreshing cold latte. Cold milk and ice meet hot espresso for a perfectly balanced iced coffee.',ingredients:['Double espresso shot','6-8 oz cold milk of choice','Ice','Optional: flavored syrup'],steps:['Fill a glass with ice','Add any flavored syrup if desired','Pour cold milk over the ice','Pull a double espresso shot','Pour the espresso over the milk and ice','Stir and enjoy'],source:'https://www.reddit.com/r/NinjaLuxeCafe/comments/1je4yzu/favorite_drinks/',img:'https://buildyourbite.com/wp-content/uploads/2024/04/Iced-Latte-Recipe-48.jpg'},
+  {id:'iced-vanilla-latte',name:'Iced Vanilla Latte',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Vanilla + Milk + Ice',desc:'A classic vanilla latte over ice. Sweet, creamy, and endlessly refreshing.',ingredients:['Double espresso shot','2 pumps vanilla syrup','6-8 oz cold milk of choice','Ice'],steps:['Add vanilla syrup to your glass','Fill glass with ice','Pour cold milk over the ice','Pull a double espresso shot','Pour espresso over the milk','Stir gently and enjoy'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://midwestniceblog.com/wp-content/uploads/2023/05/iced-vanilla-latte-pin-2-1.jpg'},
+  {id:'iced-caramel-latte',name:'Iced Caramel Latte',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Caramel + Milk + Ice',desc:'Caramel syrup, espresso, and cold milk over ice. Drizzle extra caramel on top for full effect.',ingredients:['Double espresso shot','2 pumps caramel syrup','6-8 oz cold milk of choice','Ice','Caramel drizzle'],steps:['Add caramel syrup to glass','Fill with ice and pour cold milk','Pull a double espresso shot and pour over','Drizzle caramel sauce on top','Stir and enjoy the sweet caramel notes'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://foodwithfeeling.com/wp-content/uploads/2022/05/iced-caramel-latte-5-680x1020.jpg'},
+  {id:'iced-hazelnut-latte',name:'Iced Hazelnut Latte',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Hazelnut + Milk + Ice',desc:'Nutty, sweet hazelnut flavor pairs beautifully with cold milk and espresso.',ingredients:['Double espresso shot','2 pumps hazelnut syrup','6-8 oz cold milk of choice','Ice','Optional: chopped hazelnuts'],steps:['Add hazelnut syrup to your glass','Fill with ice and pour cold milk','Pull a double espresso shot','Pour espresso over milk and ice','Stir well','Top with chopped hazelnuts for crunch'],source:'https://www.chowhound.com/1679829/ninja-luxe-cafe-coffee-machine-review/',img:'https://tyberrymuch.com/wp-content/uploads/2024/03/Stirring-Hazelnut-Iced-Coffee.jpg'},
+  {id:'iced-mocha',name:'Iced Mocha',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Chocolate + Milk + Ice',desc:'Cool, chocolatey, and caffeinated. The perfect summer treat for chocolate lovers.',ingredients:['Double espresso shot','2 tbsp chocolate sauce','6-8 oz cold milk','Ice','Whipped cream (optional)'],steps:['Add chocolate sauce to your cup','Fill a glass with ice','Pour cold milk over the ice','Pull a double espresso shot and pour over','Stir well','Top with whipped cream and chocolate drizzle'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.coffeesphere.com/wp-content/uploads/2020/08/iced-mocha-684x1024.jpg'},
+  {id:'iced-white-mocha',name:'Iced White Mocha',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + White Chocolate + Milk + Ice',desc:'White chocolate, espresso, and cold milk over ice. Sweeter and creamier than a regular iced mocha.',ingredients:['Double espresso shot','2 tbsp white chocolate sauce','6-8 oz cold milk','Ice'],steps:['Stir white chocolate sauce with a splash of hot espresso to melt','Fill glass with ice and pour cold milk','Pull remaining espresso shot','Combine everything and stir','The white chocolate gives it a creamy, dessert-like quality'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://midwestniceblog.com/wp-content/uploads/2024/11/iced-white-mocha-recipe.jpg'},
+  {id:'iced-cappuccino',name:'Iced Cappuccino',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Cold Foam + Ice',desc:'An iced cappuccino topped with thick cold foam instead of steamed milk. Extra refreshing.',ingredients:['Double espresso shot','4-5 oz cold milk for foam','Ice'],steps:['Fill a glass with ice','Pull a double espresso shot over the ice','Pour cold milk into the milk jug (minimum line)','Select COLD FOAM on the frother','Spoon the thick cold foam generously over the espresso','Enjoy the contrast of icy espresso and creamy foam'],source:'https://coffeegeek.com/reviews/firstlooks/ninja-luxe-cafe-premier-first-look-review/',img:'https://mocktail.net/wp-content/uploads/2022/08/Iced-Cappuccino-Recipe_9.jpg'},
+  {id:'iced-americano',name:'Iced Americano',type:'iced',milk:'none',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Cold Water + Ice',desc:'Espresso pulled over cold water and ice. Clean, crisp, and zero calories.',ingredients:['Double espresso shot','4-6 oz cold water','Ice'],steps:['Fill a glass with ice','Pour 4-6 oz cold water over the ice','Pull a double espresso shot directly into the glass','Watch the crema mingle with the water','Stir gently and enjoy a crisp, clean coffee'],source:'https://coffeegeek.com/reviews/fullreview/ninja-luxe-cafe-premier-full-review/',img:'https://coffee-slang.com/wp-content/uploads/2026/06/pouring-shot-into-water.jpg'},
+  {id:'cold-brew',name:'Cold Brew',type:'iced',milk:'optional',sizes:['Regular(12oz)','Large(16oz)'],base:'Cold Brew Coffee',desc:'Smooth, low-acidity cold brew made with the Ninja\'s Rapid Cold Brew feature. Takes minutes, not hours.',ingredients:['Coffee beans (coarse grind)','Cold water','Ice','Optional: milk or creamer'],steps:['Select COLD BREW on the control panel','The machine recommends a coarse grind setting','Fill the water tank with cold water','Place a cup with ice under the dispenser','Press BREW — the machine handles the rest','Add milk or sweetener to taste'],source:'https://support.ninjakitchen.com/hc/en-us/articles/14708051456796-Ninja-Luxe-Caf%C3%A9-Premier-Series-How-to-Brew-a-Cold-Brew',img:'https://www.foodandwine.com/thmb/wGY6lGRvBmLzM4DV92OOTjm2YcU=/fit-in/1500x2514/filters:no_upscale():max_bytes(150000):strip_icc()/faw-kitchenaid-cold-brew-coffee-maker-38-oz-elise-shively-17-ed799be4df974b0bb22a05e17ee84946.jpeg'},
+  {id:'vanilla-sweet-cream',name:'Vanilla Sweet Cream Cold Brew',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Cold Brew + Vanilla Sweet Cream',desc:'Cold brew topped with house-made vanilla sweet cream. Silky, sweetened, and smooth.',ingredients:['Cold brew (from machine)','2 tbsp heavy cream','1 tbsp vanilla syrup','1 tbsp milk','Ice'],steps:['Brew cold brew using the machine and pour over ice','Mix heavy cream, milk, and vanilla syrup in a small jar','Shake or whisk until slightly thickened','Slowly pour the sweet cream over the cold brew','Watch it cascade down — don\'t stir!'],source:'https://www.tiktok.com/discover/ninja-luxe-cold-brew-tutorial',img:'https://www.windingcreekranch.org/wp-content/uploads/2023/05/Vanilla-Sweet-Cream-Cold-Brew-Recipe-in-glass-1-of-1-14.jpg'},
+  {id:'iced-shaken-espresso',name:'Iced Shaken Espresso',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Shaken Espresso + Ice + Milk',desc:'Espresso shaken with ice until chilled and frothy, then topped with a splash of milk. Light and refreshing.',ingredients:['Double espresso shot','Ice','Splash of milk of choice','Optional: simple syrup'],steps:['Pull a double espresso shot','Fill a cocktail shaker with ice','Pour the hot espresso over the ice','Shake vigorously for 15-20 seconds','Pour the frothy espresso-ice mixture into a glass','Top with a splash of milk'],source:'https://www.pinterest.com/pin/ninja-luxe-cafe-recipes/',img:'https://www.thefitpeach.com/wp-content/uploads/2021/03/Copycat-Starbucks-Shaken-Espresso-The-Fit-Peach-11.jpg'},
+  {id:'brown-sugar-shaken',name:'Brown Sugar Shaken Espresso',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Brown Sugar + Ice + Milk',desc:'Inspired by the Starbucks classic. Shaking hot espresso with brown sugar creates a delicious caramelized flavor.',ingredients:['Double espresso shot','2 tbsp brown sugar','1 tsp vanilla bean paste','Ice','Splash of oat milk'],steps:['In a cocktail shaker, combine brown sugar, vanilla paste, and hot espresso shot','Shake vigorously for 15 seconds until sugar dissolves','Fill a glass with ice','Pour the shaken espresso over ice','Top with a splash of oat milk','Optional: sprinkle cinnamon on top'],source:'https://www.pinterest.com/pin/ninja-luxe-cafe-recipes/',img:'https://milkandpop.com/wp-content/uploads/2021/03/iced-brown-sugar-oatmilk-shaken-espresso-28.jpg'},
+  {id:'espresso-tonic',name:'Espresso Tonic',type:'iced',milk:'none',sizes:['Regular(10oz)'],base:'Espresso + Tonic Water + Ice',desc:'A surprisingly refreshing combination — bitter espresso meets sweet-bitter tonic water. Trendy and unusual.',ingredients:['Double espresso shot','6 oz tonic water','Ice','Optional: lemon or orange slice'],steps:['Fill a glass with ice','Pour tonic water over the ice','Pull a double espresso shot','Slowly pour the espresso over the tonic water','Watch the cascading effect','Garnish with a citrus slice'],source:'https://www.chowhound.com/1679829/ninja-luxe-cafe-coffee-machine-review/',img:'https://www.seriouseats.com/thmb/QURmUpsAcfJHjZYFmJMtUEO-2_g=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20240513-EspressoTonic-AmandaSuarez-36-7123b0f788514ad7854c2eb234d15c3b.jpg'},
+  {id:'cold-pressed-espresso',name:'Cold-Pressed Espresso',type:'iced',milk:'none',sizes:['Single','Double'],base:'Cold-Pressed Espresso',desc:'Unique to Ninja — espresso extracted with cold water under high pressure. Smooth, low-acid, perfect for iced drinks and espresso martinis.',ingredients:['18-20g coffee beans','Cold water','Ice'],steps:['Select COLD PRESSED ESPRESSO mode','Use the Luxe basket for double dosing','Place ice in your glass','Press BREW — the machine uses cold water and pressure','The resulting shot is smooth and concentrated','Use as a base for cocktails or enjoy straight'],source:'https://www.chowhound.com/1679829/ninja-luxe-cafe-coffee-machine-review/',img:'https://www.chowhound.com/img/gallery/ninja-luxe-caf-review/the-cold-pressed-espresso-test-1727983968.jpg'},
+  
+  // ── Seasonal / Specialty ──
+  {id:'pumpkin-spice-latte',name:'Pumpkin Spice Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Pumpkin Spice + Milk',desc:'The iconic fall drink. Warm pumpkin spice flavors meet espresso and steamed milk for cozy autumn vibes.',ingredients:['Double espresso shot','2 tbsp pumpkin puree','1 tbsp pumpkin pie spice','2 tbsp maple syrup or brown sugar','6-8 oz milk of choice','Whipped cream'],steps:['Mix pumpkin puree, spice, and syrup in your cup','Pull a double espresso shot over the mixture','Stir well to combine','Froth milk on STEAMED MILK setting','Pour milk over the pumpkin-espresso base','Top with whipped cream and extra spice dusting'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.munchkintime.com/wp-content/uploads/2024/09/Best-Pumpkin-Spice-Latte-Recipe-with-Coffee-21.jpg'},
+  {id:'peppermint-mocha',name:'Peppermint Mocha',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Chocolate + Peppermint + Milk',desc:'A holiday classic. Rich chocolate and cool peppermint meet bold espresso. Christmas in a cup.',ingredients:['Double espresso shot','2 tbsp chocolate sauce','1/4 tsp peppermint extract','6-8 oz milk of choice','Whipped cream','Crushed candy cane'],steps:['Add chocolate sauce and peppermint extract to your cup','Pull a double espresso shot over the mixture','Stir to combine','Froth milk on STEAMED MILK setting','Pour milk over the chocolate-espresso base','Top with whipped cream and crushed candy cane'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://mommakesdinner.com/wp-content/uploads/2014/12/Perfect-holiday-drink-peppermint-mocha-.png'},
+  {id:'honey-lavender-latte',name:'Honey Lavender Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Honey + Lavender + Milk',desc:'Floral, sweet, and sophisticated. Lavender and honey pair beautifully with espresso for a calm, aromatic drink.',ingredients:['Double espresso shot','1 tbsp honey','1/4 tsp dried culinary lavender (or lavender syrup)','6-8 oz milk of choice'],steps:['Warm honey and lavender together in a small dish (10 seconds in microwave)','Strain out lavender if using dried','Add honey-lavender mixture to your cup','Pull a double espresso shot','Froth milk on STEAMED MILK setting','Pour milk over espresso','Optional: garnish with a tiny lavender sprig'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://i0.wp.com/www.heatherbien.com/wp-content/uploads/2021/03/DSC_1429.jpg?resize=1365,2048&ssl=1'},
+  {id:'maple-cinnamon-latte',name:'Maple Cinnamon Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Maple + Cinnamon + Milk',desc:'Pure maple syrup and warm cinnamon give this latte a cozy, rustic character. Perfect for crisp autumn mornings.',ingredients:['Double espresso shot','2 tbsp pure maple syrup','1/4 tsp ground cinnamon','6-8 oz milk of choice'],steps:['Add maple syrup and cinnamon to your cup','Pull a double espresso shot over the mixture','Stir well','Froth milk on STEAMED MILK setting','Pour milk over the espresso','Sprinkle extra cinnamon on top'],source:'https://www.pinterest.com/pin/ninja-luxe-cafe-recipes/',img:'https://preview.redd.it/maple-cinnamon-latte-v0-pcfhk600fnea1.jpg?width=640&crop=smart&auto=webp&s=9844c5963245b5cc360727644e2446f077986457'},
+  {id:'eggnog-latte',name:'Eggnog Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Eggnog',desc:'A holiday treat. Rich, spiced eggnog replaces milk for an ultra-creamy seasonal latte. Only available when eggnog is in stores!',ingredients:['Double espresso shot','6-8 oz eggnog','Nutmeg for dusting'],steps:['Pour eggnog into the milk jug','Select STEAMED MILK on the frother','Froth until warm (do not overheat — eggnog can curdle)','Pull a double espresso shot','Pour the steamed eggnog over the espresso','Dust generously with nutmeg'],source:'https://www.wholelattelove.com/blogs/support-articles/drink-recipes-and-ratios',img:'https://coffeecopycat.com/wp-content/uploads/2023/09/EggnogLatte-Process4.jpg'},
+  {id:'gingerbread-latte',name:'Gingerbread Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Gingerbread + Milk',desc:'Warm gingerbread spices meet espresso. Like a gingerbread cookie in liquid form.',ingredients:['Double espresso shot','1 tbsp molasses','1/4 tsp gingerbread spice (ginger, cinnamon, nutmeg, clove)','1 tbsp brown sugar','6-8 oz milk of choice','Whipped cream'],steps:['Mix molasses, spices, and brown sugar in your cup','Pull a double espresso shot over the mixture','Stir until sugar dissolves','Froth milk on STEAMED MILK setting','Pour milk over the spiced espresso','Top with whipped cream and a gingerbread cookie crumble'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.aheadofthyme.com/wp-content/uploads/2025/12/gingerbread-latte-20-683x1024.jpg'},
+  {id:'tiramisu-latte',name:'Tiramisu Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Mascarpone + Cocoa + Milk',desc:'Inspired by the Italian dessert. Mascarpone, cocoa, and espresso combine for a decadent coffee experience.',ingredients:['Double espresso shot','1 tbsp mascarpone cheese (or cream cheese)','1 tbsp cocoa powder','1 tbsp simple syrup','6-8 oz milk of choice','Cocoa dusting'],steps:['Mix mascarpone, cocoa, and simple syrup in your cup','Pull a double espresso shot over the mixture','Stir until smooth','Froth milk on STEAMED MILK setting','Pour milk over the tiramisu base','Dust with cocoa powder'],source:'https://www.pinterest.com/pin/ninja-luxe-cafe-recipes/',img:'https://baranbakery.com/wp-content/uploads/2022/10/Tiramisu-Latte-2-683x1024.jpg'},
+  {id:'rose-latte',name:'Rose Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Rose + Milk',desc:'A delicate, floral latte with rose water. Lightly sweet, fragrant, and beautiful. Popular in Middle Eastern cafes.',ingredients:['Double espresso shot','1/2 tsp rose water','1 tbsp honey or simple syrup','6-8 oz milk of choice','Dried rose petals (garnish)'],steps:['Add rose water and honey to your cup','Pull a double espresso shot over the mixture','Stir gently','Froth milk on STEAMED MILK setting','Pour milk over the rose espresso','Garnish with dried rose petals for a stunning presentation'],source:'https://www.pinterest.com/pin/ninja-luxe-cafe-recipes/',img:'https://livelytable.com/wp-content/uploads/2020/06/cardamom-rose-latte-8-700x991.jpg'},
+
+  // ── Blended ──
+  {id:'coffee-frappe',name:'Coffee Frappe',type:'blended',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Blended Coffee + Ice',desc:'A thick, creamy blended coffee drink. Like a coffee milkshake but lighter. Perfect for hot summer days.',ingredients:['Double espresso shot (cooled)','1 cup ice','1/2 cup milk of choice','2 tbsp simple syrup or sweetener','Whipped cream (optional)'],steps:['Pull a double espresso shot and let it cool for 5 minutes','Add ice, milk, cooled espresso, and syrup to a blender','Blend until thick and smooth','Pour into a tall glass','Top with whipped cream if desired','Serve with a straw'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://cdn.shopify.com/s/files/1/0800/4858/7043/files/Best_Cafely_Products_to_Make_a_Frappe_at_Home.jpg?v=1773720879'},
+  {id:'mocha-frappe',name:'Mocha Frappe',type:'blended',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Blended Coffee + Chocolate + Ice',desc:'A chocolate-coffee blended drink. Thick, sweet, and indulgent — the ultimate summer treat.',ingredients:['Double espresso shot (cooled)','2 tbsp chocolate sauce','1 cup ice','1/2 cup milk of choice','2 tbsp simple syrup','Whipped cream','Chocolate drizzle'],steps:['Pull espresso shot and cool','Add ice, milk, cooled espresso, chocolate sauce, and syrup to blender','Blend until thick and creamy','Pour into a tall glass','Top with whipped cream and chocolate drizzle'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://dontmesswithmama.com/wp-content/uploads/2013/03/paleo-mocha-frappe-main.jpg'},
+  {id:'caramel-frappe',name:'Caramel Frappe',type:'blended',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Blended Coffee + Caramel + Ice',desc:'A caramel-coffee blended drink. Sweet, buttery caramel meets bold coffee in a thick, icy blend.',ingredients:['Double espresso shot (cooled)','2 tbsp caramel sauce','1 cup ice','1/2 cup milk of choice','2 tbsp simple syrup','Whipped cream','Caramel drizzle'],steps:['Pull espresso shot and cool','Add ice, milk, cooled espresso, caramel sauce, and syrup to blender','Blend until thick and creamy','Pour into a tall glass','Drizzle caramel sauce inside the glass and on top','Top with whipped cream'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://thebusybaker.ca/wp-content/uploads/2020/05/easy-caramel-frappuccino-9.jpg'},
+
+  // ── Cocktails ──
+  {id:'espresso-martini',name:'Espresso Martini',type:'cocktail',milk:'none',sizes:['Cocktail'],base:'Cold-Pressed Espresso + Vodka + Kahlua',desc:'The ultimate after-dinner cocktail. Ninja\'s cold-pressed espresso makes this extra smooth.',ingredients:['1 shot cold-pressed espresso','1.5 oz vodka','1 oz Kahlua (or coffee liqueur)','0.5 oz simple syrup','Ice cubes','Coffee beans for garnish'],steps:['Select COLD PRESSED ESPRESSO mode and pull a shot','Fill a shaker with ice','Add espresso, vodka, Kahlua, and syrup','Shake vigorously for 15 seconds','Strain into a chilled martini glass','Garnish with 3 coffee beans'],source:'https://www.chowhound.com/1679829/ninja-luxe-cafe-coffee-machine-review/',img:'https://h7.alamy.com/comp/2H79XXA/espresso-martini-cocktail-with-vodka-coffee-liqueur-syrup-and-ice-black-background-bar-tools-2H79XXA.jpg'},
+  {id:'white-russian',name:'White Russian',type:'cocktail',milk:'all',sizes:['Cocktail'],base:'Cold-Pressed Espresso + Vodka + Cream',desc:'A creamy, decadent cocktail. Cold-pressed espresso, vodka, and cream over ice — the Dude abides.',ingredients:['1 shot cold-pressed espresso','1.5 oz vodka','1 oz Kahlua','1 oz heavy cream','Ice'],steps:['Fill a rocks glass with ice','Pour vodka and Kahlua over the ice','Pull a shot of cold-pressed espresso','Add the espresso to the glass','Float the heavy cream on top by pouring over a spoon','Stir gently before drinking'],source:'https://www.chowhound.com/1679829/ninja-luxe-cafe-coffee-machine-review/',img:'https://preppykitchen.com/wp-content/uploads/2021/01/White-Russian-blog-2.jpg'},
+  {id:'affogato',name:'Affogato',type:'cocktail',milk:'none',sizes:['Single'],base:'Espresso + Ice Cream',desc:'A simple Italian dessert — hot espresso poured over cold vanilla gelato. The contrast of hot and cold is divine.',ingredients:['Single espresso shot','1-2 scoops vanilla gelato or ice cream'],steps:['Scoop vanilla gelato into a small bowl or glass','Pull a single espresso shot','Immediately pour the hot espresso over the gelato','Serve right away before it melts completely','Watch the gelato begin to melt into creamy pools'],source:'https://www.wholelattelove.com/blogs/support-articles/drink-recipes-and-ratios',img:'https://media.istockphoto.com/id/2209741922/photo/affogato.jpg?s=612x612&w=0&k=20&c=AKe_dhNAqbJ68cn7bfJg7Pao0GPrEuiCgF-bfX62Sh0='},
+  {id:'irish-coffee',name:'Irish Coffee',type:'cocktail',milk:'none',sizes:['Regular(8oz)'],base:'Coffee + Irish Whiskey + Cream',desc:'A warming cocktail. Hot coffee spiked with Irish whiskey and topped with thick cream. Perfect for cold evenings.',ingredients:['6 oz hot drip coffee or Americano','1.5 oz Irish whiskey','1 tsp brown sugar','Heavy cream, lightly whipped','Nutmeg'],steps:['Brew a cup of drip coffee or pull an Americano','Add brown sugar to a warmed glass mug','Pour the hot coffee over the sugar and stir','Add Irish whiskey','Float lightly whipped cream on top by pouring over a spoon','Grate nutmeg over the cream'],source:'https://www.chowhound.com/1679829/ninja-luxe-cafe-coffee-machine-review/',img:'https://hostessatheart.com/wp-content/uploads/2024/02/Irish-Coffee.jpg'},
+  {id:'espresso-rumtini',name:'Espresso Rumtini',type:'cocktail',milk:'none',sizes:['Cocktail'],base:'Cold-Pressed Espresso + Rum + Coffee Liqueur',desc:'A tropical twist on the espresso martini. Dark rum adds molasses notes that pair beautifully with cold-pressed espresso.',ingredients:['1 shot cold-pressed espresso','1.5 oz dark rum','0.5 oz Kahlua','0.5 oz simple syrup','Ice','Lime twist'],steps:['Select COLD PRESSED ESPRESSO mode and pull a shot','Fill a shaker with ice','Add espresso, dark rum, Kahlua, and syrup','Shake vigorously for 15 seconds','Strain into a chilled martini glass','Garnish with a lime twist'],source:'https://www.chowhound.com/1679829/ninja-luxe-cafe-coffee-machine-review/',img:'https://drinkadrink.com/wp-content/uploads/2026/03/5be97e16dda30e0a17609bc5_espresso-rumtini-large.jpg'},
+
+  // ── Ninja Specialties ──
+  {id:'cold-foam-vanilla',name:'Cold Foam (Vanilla)',type:'specialty',milk:'all',sizes:['Any'],base:'Cold Frothed Milk + Vanilla',desc:'Ninja\'s unique cold foam — thick, airy foam from cold milk. Vanilla-flavored, perfect for topping iced drinks.',ingredients:['1/4 cup cold milk of choice','1 tbsp vanilla syrup'],steps:['Pour cold milk and vanilla syrup into the milk jug','Select COLD FOAM on the frother','The whisk creates thick, pourable foam in about 60 seconds','Spoon over any iced latte or cold brew'],source:'https://coffeegeek.com/reviews/firstlooks/ninja-luxe-cafe-premier-first-look-review/',img:'https://www.mybakingaddiction.com/wp-content/uploads/2023/10/topping-coffee-with-cold-foam-700x1050.jpg'},
+  {id:'cold-foam-caramel',name:'Cold Foam (Caramel)',type:'specialty',milk:'all',sizes:['Any'],base:'Cold Frothed Milk + Caramel',desc:'Caramel cold foam adds a sweet, buttery layer to any iced drink. Luxuriously thick and pourable.',ingredients:['1/4 cup cold milk of choice','1 tbsp caramel syrup'],steps:['Pour cold milk and caramel syrup into the milk jug','Select COLD FOAM on the frother','Wait for the thick foam to form (about 60 seconds)','Spoon generously over iced lattes or cold brew'],source:'https://coffeegeek.com/reviews/firstlooks/ninja-luxe-cafe-premier-first-look-review/',img:'https://emilylaurae.com/wp-content/uploads/2022/10/salted-caramel-cold-foam-3.jpg'},
+  {id:'cold-foam-chocolate',name:'Cold Foam (Chocolate)',type:'specialty',milk:'all',sizes:['Any'],base:'Cold Frothed Milk + Chocolate',desc:'Chocolate cold foam — like a chocolate mousse topping for your cold brew. Rich and decadent.',ingredients:['1/4 cup cold milk of choice','1 tbsp chocolate syrup'],steps:['Pour cold milk and chocolate syrup into the milk jug','Select COLD FOAM on the frother','Let the whisk create rich chocolate foam','Spoon over iced drinks for a mocha-style finish'],source:'https://coffeegeek.com/reviews/firstlooks/ninja-luxe-cafe-premier-first-look-review/',img:'https://www.ohhowcivilized.com/wp-content/uploads/chocolate-cold-foam-5.jpg'},
+  {id:'cold-foam-cinnamon',name:'Cold Foam (Cinnamon)',type:'specialty',milk:'all',sizes:['Any'],base:'Cold Frothed Milk + Cinnamon',desc:'Cinnamon cold foam with a warm-spice kick. Perfect on iced brown sugar drinks or cold brew.',ingredients:['1/4 cup cold milk of choice','1/4 tsp ground cinnamon','1 tsp simple syrup'],steps:['Pour cold milk, cinnamon, and syrup into the milk jug','Select COLD FOAM on the frother','Wait for thick cinnamon-speckled foam','Spoon over your favorite iced drink'],source:'https://coffeegeek.com/reviews/firstlooks/ninja-luxe-cafe-premier-first-look-review/',img:'https://coffeecopycat.com/wp-content/uploads/2023/12/CinnamonCaramelCreamColdBrew-Process6.jpg'},
+  {id:'brew-over-ice',name:'Brew-Over-Ice Optimized',type:'iced',milk:'optional',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso Brewed Over Ice',desc:'The Ninja Luxe\'s BREW OVER ICE setting extracts espresso at a lower temperature to avoid watering down your iced drink.',ingredients:['18-20g coffee beans','Ice','Optional: milk or syrup'],steps:['Fill a glass to the top with ice','Select BREW OVER ICE on the control panel','The machine adjusts temperature for optimal ice brewing','Place your glass under the dispenser','Press BREW','The espresso extracts directly over ice for maximum flavor'],source:'https://support.ninjakitchen.com/hc/en-us/articles/14708051456796',img:'https://realfood.tesco.com/media/images/RFO-RWC-MainHero-Australia-7b808cf0-bde2-4b56-9006-96f42f6df1e1-0-1400x919.jpg'},
+  {id:'thick-froth-capp',name:'Thick Froth Cappuccino',type:'milk',milk:'all',sizes:['Small(6oz)','Regular(8oz)'],base:'Espresso + Thick Froth',desc:'Using the Ninja\'s THICK FROTH setting for an authentic, dense cappuccino foam. Like a cloud on top of your espresso.',ingredients:['Double espresso shot','3-4 oz milk of choice'],steps:['Pull a double espresso shot','Pour milk into the jug to the CAPPUCCINO line','Select THICK FROTH on the frother','Wait for the dense, meringue-like foam to form','Scoop generous spoonfuls of thick foam over the espresso','The foam should stand up on its own — that is the Ninja difference'],source:'https://coffeegeek.com/reviews/fullreview/ninja-luxe-cafe-premier-full-review/',img:'https://coffeebros.com/cdn/shop/articles/cappuccino.jpg'},
+
+  // ── Tea / Steamers ──
+  {id:'london-fog',name:'London Fog',type:'tea',milk:'all',sizes:['Regular(10oz)','Large(14oz)'],base:'Earl Grey + Vanilla + Milk',desc:'A comforting tea latte. Fragrant Earl Grey tea meets vanilla and steamed milk. Elegant and soothing.',ingredients:['2 Earl Grey tea bags','1 tbsp vanilla syrup','6-8 oz milk of choice','6 oz hot water','Optional: lavender'],steps:['Steep 2 Earl Grey tea bags in 6 oz hot water for 4-5 minutes','Remove tea bags and add vanilla syrup','Froth milk on STEAMED MILK setting','Pour the steamed milk into the tea','Optional: add a pinch of dried lavender'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://inthekitch.net/wp-content/uploads/how-to-make-a-london-fog-final-1.jpg'},
+  {id:'hot-chocolate',name:'Hot Chocolate',type:'tea',milk:'all',sizes:['Regular(8oz)','Large(12oz)'],base:'Steamed Milk + Chocolate',desc:'Rich, creamy hot chocolate made with real chocolate and steamed milk. No powder mix required.',ingredients:['8-12 oz milk of choice','3 tbsp chocolate sauce or melted chocolate','Whipped cream','Chocolate shavings'],steps:['Add chocolate sauce to your cup','Pour milk into the jug','Select STEAMED MILK on the frother','Froth until warm and velvety','Pour the steamed milk over the chocolate','Stir well to combine','Top with whipped cream and chocolate shavings'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://sweetlycakes.com/wp-content/uploads/2021/12/chocolatviennois-9blog.jpg'},
+  {id:'mexican-hot-chocolate',name:'Mexican Hot Chocolate',type:'tea',milk:'all',sizes:['Regular(8oz)','Large(12oz)'],base:'Steamed Milk + Chocolate + Cinnamon + Chili',desc:'Hot chocolate with a kick. Cinnamon and a touch of chili give this drink warmth and depth.',ingredients:['8-12 oz milk of choice','3 tbsp chocolate sauce','1/4 tsp ground cinnamon','Pinch of cayenne pepper or chili powder','Whipped cream'],steps:['Add chocolate sauce, cinnamon, and cayenne to your cup','Froth milk on STEAMED MILK setting','Pour steamed milk over the chocolate mixture','Stir thoroughly','Top with whipped cream and an extra cinnamon dusting'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.favfamilyrecipes.com/wp-content/uploads/2022/11/Mexican-hot-chocolate-recipe.jpg'},
+  {id:'matcha-latte',name:'Matcha Latte',type:'tea',milk:'all',sizes:['Regular(10oz)','Large(14oz)'],base:'Matcha + Milk',desc:'Vibrant green tea latte. Earthy, creamy, and packed with antioxidants. Use ceremonial grade matcha for best results.',ingredients:['1-2 tsp matcha powder','2 oz hot water','6-8 oz milk of choice','1 tsp honey or simple syrup (optional)'],steps:['Sift matcha powder into a bowl to remove lumps','Add 2 oz hot water (not boiling — 175F / 80C)','Whisk vigorously in a zigzag motion until frothy','Froth milk on STEAMED MILK setting','Pour the steamed milk into the matcha','Sweeten to taste with honey'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.aberdeenskitchen.com/wp-content/uploads/2020/04/Matcha-Green-Tea-Latte.jpg'},
+  {id:'chai-latte',name:'Chai Latte',type:'tea',milk:'all',sizes:['Regular(10oz)','Large(14oz)'],base:'Chai + Milk',desc:'Spiced Indian tea latte. Warm, aromatic, and comforting. The spices vary but typically include cardamom, cinnamon, ginger, and clove.',ingredients:['2 oz chai concentrate (or 2 chai tea bags steeped in 3 oz water)','6-8 oz milk of choice','Optional: cinnamon or cardamom'],steps:['If using concentrate: add chai concentrate to your cup','If using tea bags: steep 2 bags in 3 oz hot water for 5 minutes','Froth milk on STEAMED MILK setting','Pour steamed milk over the chai base','Sprinkle with cinnamon','Honey or simple syrup optional for added sweetness'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://vanillaandbean.com/wp-content/uploads/2026/01/ChaiTeaLatteTeaBags-7-680x1020.jpg'},
+  {id:'turmeric-latte',name:'Turmeric Latte (Golden Milk)',type:'tea',milk:'all',sizes:['Regular(10oz)'],base:'Turmeric + Spices + Milk',desc:'Anti-inflammatory golden latte. Turmeric, ginger, and black pepper in warm milk. Earthy, spicy, and incredibly healthy.',ingredients:['1 tsp ground turmeric','1/2 tsp ground ginger','Pinch of black pepper (activates turmeric)','1 tsp honey or maple syrup','8-10 oz milk of choice (oat works best)'],steps:['Mix turmeric, ginger, pepper, and honey in your cup','Froth milk on STEAMED MILK setting','Pour the hot steamed milk over the spice mixture','Stir vigorously until the spices are fully incorporated','The black pepper is essential — it increases turmeric absorption by 2000%'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://feelgoodfoodie.net/wp-content/uploads/2025/10/Golden-Milk-Turmeric-Latte-06.jpg'},
+  {id:'vanilla-steamer',name:'Vanilla Steamer',type:'tea',milk:'all',sizes:['Regular(8oz)','Large(12oz)'],base:'Steamed Milk + Vanilla',desc:'A caffeine-free treat — steamed milk with vanilla syrup. Great for kids or when you want something warm without coffee.',ingredients:['8-12 oz milk of choice','2 tbsp vanilla syrup','Whipped cream (optional)'],steps:['Add vanilla syrup to your cup','Pour milk into the jug','Select STEAMED MILK on the frother','Froth until warm and velvety','Pour into your cup','Top with whipped cream and vanilla bean specks'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.sweetsteep.com/wp-content/uploads/2023/10/vanilla-steamer-683x1024.jpg'},
+  {id:'steamer-caramel',name:'Caramel Steamer',type:'tea',milk:'all',sizes:['Regular(8oz)','Large(12oz)'],base:'Steamed Milk + Caramel',desc:'Warm, buttery caramel steamer. Pure comfort in a cup — no coffee, just sweet caramel and steamed milk.',ingredients:['8-12 oz milk of choice','2 tbsp caramel syrup','Whipped cream','Caramel drizzle'],steps:['Add caramel syrup to your cup','Froth milk on STEAMED MILK setting','Pour steamed milk over the caramel','Stir to combine','Top with whipped cream and caramel drizzle'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.littlesugarsnaps.com/wp-content/uploads/2015/10/Bourbon-Caramel-Steamer-2603.jpg'},
+  {id:'steamer-hazelnut',name:'Hazelnut Steamer',type:'tea',milk:'all',sizes:['Regular(8oz)','Large(12oz)'],base:'Steamed Milk + Hazelnut',desc:'Nutty, warm hazelnut steamer. A caffeine-free treat with toasted hazelnut flavor.',ingredients:['8-12 oz milk of choice','2 tbsp hazelnut syrup','Whipped cream'],steps:['Add hazelnut syrup to your cup','Froth milk on STEAMED MILK setting','Pour steamed milk over the syrup','Stir well','Top with whipped cream'],source:'',img:'https://www.upliftingmayhem.com/wp-content/uploads/2017/01/steamersdouble2-1024x750.jpg'},
+  {id:'steamer-chocolate',name:'Chocolate Steamer',type:'tea',milk:'all',sizes:['Regular(8oz)','Large(12oz)'],base:'Steamed Milk + Chocolate',desc:'A lighter version of hot chocolate — steamed milk with chocolate syrup. Simple, quick, and kid-friendly.',ingredients:['8-12 oz milk of choice','2-3 tbsp chocolate syrup','Whipped cream'],steps:['Add chocolate syrup to your cup','Froth milk on STEAMED MILK setting','Pour steamed milk over the chocolate','Stir to combine','Top with whipped cream'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://cdn.bakedbree.com/uploads/2020/11/steam-hot-chocolate-RESHOOT-12-scaled.jpg'},
+
+  // ── Sugar-Free / Low-Cal ──
+  {id:'sf-vanilla-latte',name:'Sugar-Free Vanilla Latte',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + SF Vanilla + Milk',desc:'All the flavor of a vanilla latte without the sugar. Use sugar-free syrup and your preferred milk.',ingredients:['Double espresso shot','2 pumps sugar-free vanilla syrup','6-8 oz milk of choice'],steps:['Add sugar-free vanilla syrup to your cup','Pull a double espresso shot','Froth milk on STEAMED MILK setting','Pour milk over the espresso','Stir and enjoy guilt-free'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://midwestniceblog.com/wp-content/uploads/2023/05/easy-vanilla-latte-recipe.jpg'},
+  {id:'sf-caramel-iced-latte',name:'Sugar-Free Caramel Iced Latte',type:'iced',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + SF Caramel + Milk + Ice',desc:'Iced caramel latte with zero sugar. All the sweet caramel flavor without the calories.',ingredients:['Double espresso shot','2 pumps sugar-free caramel syrup','6-8 oz cold milk of choice (unsweetened almond is lowest cal)','Ice'],steps:['Add sugar-free caramel syrup to your glass','Fill with ice and pour cold milk','Pull a double espresso shot','Pour over the milk and ice','Stir well'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://healinghomerecipes.co/wp-content/uploads/2023/07/Sugar-Free-Salted-Caramel-Iced-Coffee-1080-%C3%97-1920-px.jpg'},
+  {id:'skinny-mocha',name:'Skinny Mocha',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Cocoa + Milk',desc:'A lighter mocha made with unsweetened cocoa and your choice of sugar-free sweetener. All the chocolate flavor, fewer calories.',ingredients:['Double espresso shot','1 tbsp unsweetened cocoa powder','1-2 packets sugar-free sweetener (stevia or monk fruit)','6-8 oz milk of choice (unsweetened almond or skim)'],steps:['Add cocoa powder and sweetener to your cup','Pull a double espresso shot over the cocoa','Stir until the cocoa dissolves completely','Froth milk on STEAMED MILK setting','Pour milk over the espresso-cocoa mixture'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://loseweightbyeating.com/wp-content/uploads/2023/11/low-calorie-mocha-latte-recipe-scaled.jpeg'},
+  {id:'low-cal-cold-brew',name:'Low-Cal Cold Brew',type:'iced',milk:'optional',sizes:['Regular(12oz)','Large(16oz)'],base:'Cold Brew + SF Sweetener',desc:'Cold brew is naturally low-calorie. Add a sugar-free sweetener and a splash of unsweetened almond milk for a near-zero-calorie treat.',ingredients:['Cold brew (from machine)','Sugar-free vanilla or caramel syrup (optional)','Splash of unsweetened almond milk (optional)','Ice'],steps:['Select COLD BREW on the machine','Fill a glass with ice','Brew cold brew over the ice','Add 1-2 pumps sugar-free syrup if desired','Splash with unsweetened almond milk (only ~5 calories)'],source:'https://support.ninjakitchen.com/hc/en-us/articles/14708051456796',img:'https://www.thedietchefs.com/wp-content/uploads/2024/02/Low-calorie-iced-coffee.jpg'},
+  
+  // ── More Classics ──
+  {id:'vanilla-latte',name:'Vanilla Latte',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Vanilla + Milk',desc:'A classic vanilla latte — sweet, creamy, and endlessly customizable. Try with oat milk for a dairy-free treat.',ingredients:['Double espresso shot','2 pumps vanilla syrup','6-8 oz milk of choice','Optional: vanilla bean powder'],steps:['Add vanilla syrup to your cup','Pull a double espresso shot','Froth milk on STEAMED MILK setting','Pour milk over the espresso','Stir gently and enjoy'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://midwestniceblog.com/wp-content/uploads/2023/05/recipe-for-vanilla-latte.jpg'},
+  {id:'hazelnut-latte',name:'Hazelnut Latte',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Hazelnut + Milk',desc:'Nutty, sweet, and comforting. Hazelnut pairs especially well with oat milk.',ingredients:['Double espresso shot','2 pumps hazelnut syrup','6-8 oz milk of choice'],steps:['Add hazelnut syrup to cup','Pull a double espresso shot','Froth milk on STEAMED MILK setting','Pour milk over espresso','Optional: top with chopped hazelnuts'],source:'https://www.chowhound.com/1679829/ninja-luxe-cafe-coffee-machine-review/',img:'https://coffeetalkies.com/wp-content/uploads/2025/03/Hazelnut-Latte-2-1.jpg'},
+  {id:'con-panna',name:'Espresso con Panna',type:'espresso',milk:'all',sizes:['Single','Double'],base:'Espresso + Whipped Cream',desc:'Espresso "with cream" — a simple, elegant Italian drink. A shot of espresso topped with a dollop of whipped cream.',ingredients:['Single or double espresso shot','Fresh whipped cream'],steps:['Pull your espresso shot','Top with a generous dollop of freshly whipped cream','The hot espresso melts the cream slightly','Drink immediately — the temperature contrast is the point'],source:'https://www.wholelattelove.com/blogs/support-articles/drink-recipes-and-ratios',img:'https://www.cottercrunch.com/wp-content/uploads/2023/02/2-Dairy-Free-con-panna-3.jpg'},
+  
+  // ── Bonus Recipes ──
+  {id:'gibraltar',name:'Gibraltar / Cortado',type:'milk',milk:'all',sizes:['Small(4.5oz)'],base:'Espresso + Steamed Milk',desc:'A San Francisco classic — double espresso with 2oz steamed milk served in a Gibraltar glass. Stronger than a latte, smoother than a macchiato.',ingredients:['Double espresso shot','2 oz steamed milk'],steps:['Pull a double espresso shot into a Gibraltar glass (or small rocks glass)','Froth 2 oz milk on STEAMED MILK setting','Pour the steamed milk over the espresso','Should be about equal parts — served with no foam on top'],source:'https://clivecoffee.com/blogs/learn/making-cafe-quality-drinks-at-home',img:'https://blog.lovers.coffee/wp-content/uploads/2022/09/Gibraltar.png'},
+  {id:'piccolo-latte',name:'Piccolo Latte',type:'milk',milk:'all',sizes:['Small(4oz)'],base:'Ristretto + Steamed Milk',desc:'A tiny latte — single ristretto shot topped with silky steamed milk in a small glass. Big on flavor, small in size.',ingredients:['Single ristretto shot','3 oz milk of choice'],steps:['Pull a single ristretto shot (stop the shot at 15-20ml)','Froth 3 oz milk on STEAMED MILK setting','Pour the steamed milk over the ristretto','The small size keeps the coffee flavor intense'],source:'https://clivecoffee.com/blogs/learn/making-cafe-quality-drinks-at-home',img:'https://cdn.shopify.com/s/files/1/0977/3904/7250/files/cafe-piccolo-latte-mostrador-madera-tienda-cafe_3249-3974.jpg'},
+  {id:'marocchino',name:'Marocchino',type:'milk',milk:'all',sizes:['Small'],base:'Espresso + Cocoa + Foam',desc:'An Italian layered drink — cocoa powder, espresso, and thick foam in a small glass. Rich and decadent.',ingredients:['Single espresso shot','Cocoa powder','Small amount of milk foam'],steps:['Dust the bottom of a small glass with cocoa powder','Pull a single espresso shot directly into the glass','Froth a small amount of milk on THICK FROTH','Spoon the thick foam on top','Dust with more cocoa powder'],source:'https://www.wholelattelove.com/blogs/support-articles/drink-recipes-and-ratios',img:'https://www.eateveryslice.com/wp-content/uploads/2025/01/1-Eat-Every-Slice-marocchino-coffee-1024x576.webp'},
+  {id:'vietnamese-iced-coffee',name:'Vietnamese Iced Coffee',type:'iced',milk:'all',sizes:['Regular(10oz)'],base:'Espresso + Condensed Milk + Ice',desc:'Strong coffee meets sweetened condensed milk over ice. Rich, sweet, and incredibly addictive.',ingredients:['Double espresso shot','2 tbsp sweetened condensed milk','Ice'],steps:['Add sweetened condensed milk to a glass','Fill the glass with ice','Pull a double espresso shot directly over the ice','Stir vigorously until the condensed milk dissolves into the coffee','The result should be creamy, sweet, and strong'],source:'https://www.chowhound.com/1679829/ninja-luxe-cafe-coffee-machine-review/',img:'https://iheartumami.com/wp-content/uploads/2018/07/Coconut-Milk-Vietnamese-Iced-Coffee-Paleo-Vegan-4.jpg'},
+  {id:'iced-matcha-latte',name:'Iced Matcha Latte',type:'tea',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Matcha + Milk + Ice',desc:'Vibrant green iced matcha latte. Earthy, refreshing, and beautiful. Use ceremonial grade matcha for best color.',ingredients:['1-2 tsp matcha powder','2 oz cold water','6-8 oz cold milk of choice','Ice','1 tsp honey (optional)'],steps:['Sift matcha into a small jar with 2 oz cold water','Shake vigorously until matcha is fully dissolved and frothy','Fill a glass with ice and pour cold milk','Pour the matcha mixture over the milk','Stir gently — the layers look beautiful'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://thewanderlustkitchen.com/wp-content/uploads/2024/01/easy-simple-iced-green-tea-latte-1200.jpg'},
+  {id:'iced-london-fog',name:'Iced London Fog',type:'tea',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Earl Grey + Vanilla + Milk + Ice',desc:'A refreshing iced version of the London Fog. Fragrant Earl Grey with vanilla and cold milk over ice.',ingredients:['2 Earl Grey tea bags','1/4 cup hot water','2 tbsp vanilla syrup','6-8 oz cold milk of choice','Ice'],steps:['Steep 2 tea bags in 1/4 cup hot water for 5 minutes (strong concentrate)','Remove tea bags and stir in vanilla syrup','Fill a glass with ice','Pour cold milk over the ice','Pour the tea concentrate over the milk','Stir to combine'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.heynutritionlady.com/wp-content/uploads/2022/05/Iced_London_Fog_Latte-7.jpg'},
+  {id:'smores-latte',name:'S\'mores Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Chocolate + Marshmallow + Milk',desc:'Summer campfire in a cup. Chocolate and toasted marshmallow flavors meet espresso for a nostalgic treat.',ingredients:['Double espresso shot','2 tbsp chocolate sauce','1 tbsp marshmallow fluff (or 2 pumps marshmallow syrup)','6-8 oz milk of choice','Graham cracker crumble','Whipped cream'],steps:['Add chocolate sauce and marshmallow fluff to your cup','Pull a double espresso shot over the mixture','Stir until marshmallow melts','Froth milk on STEAMED MILK setting','Pour milk over the espresso mixture','Top with whipped cream and graham cracker crumble'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://insidebrucrewlife.com/wp-content/uploads/2015/04/Smores-Latte-4.jpg'},
+  {id:'cinnamon-roll-latte',name:'Cinnamon Roll Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Cinnamon + Brown Sugar + Milk',desc:'Tastes like a warm cinnamon roll in latte form. Brown sugar, cinnamon, and a cream cheese-inspired foam topping.',ingredients:['Double espresso shot','1 tbsp brown sugar','1/2 tsp cinnamon','6-8 oz milk of choice','1 tbsp cream cheese (softened)','1 tsp vanilla'],steps:['Mix brown sugar and cinnamon in your cup','Pull a double espresso shot over the mixture','Stir until sugar dissolves','Mix cream cheese and vanilla into the milk before frothing','Froth the cream cheese milk on STEAMED MILK setting','Pour over the cinnamon espresso'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.anallievent.com/wp-content/uploads/2016/10/Salted-CaramelCinnamon-Roll-Latte-660x990.png'},
+  {id:'hazelnut-mocha',name:'Hazelnut Mocha',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Chocolate + Hazelnut + Milk',desc:'The perfect marriage of chocolate and hazelnut — like Nutella in a cup. Rich, nutty, and chocolatey.',ingredients:['Double espresso shot','1 tbsp chocolate sauce','2 pumps hazelnut syrup','6-8 oz milk of choice','Whipped cream'],steps:['Add chocolate sauce and hazelnut syrup to your cup','Pull a double espresso shot over the mixture','Stir to combine','Froth milk on STEAMED MILK setting','Pour milk over the espresso mixture','Top with whipped cream and a chocolate drizzle'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.patrickmaese.com/wp-content/uploads/2020/09/Hazelnut-Mocha-Latte-blog-1.jpg'},
+  {id:'black-white-mocha',name:'Black & White Mocha',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Dark + White Chocolate + Milk',desc:'Can\'t choose between dark and white chocolate? Have both. Half dark, half white chocolate mocha.',ingredients:['Double espresso shot','1 tbsp dark chocolate sauce','1 tbsp white chocolate sauce','6-8 oz milk of choice','Whipped cream'],steps:['Add both chocolate sauces to your cup','Pull a double espresso shot over the chocolate','Stir to melt and combine','Froth milk on STEAMED MILK setting','Pour milk over the chocolate-espresso','Top with whipped cream and a yin-yang drizzle of both chocolates'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://www.littlesugarsnaps.com/wp-content/uploads/2022/01/white-chocolate-mocha-cream-1.jpg'},
+  {id:'quad-shot-over-ice',name:'Quad Shot Over Ice',type:'iced',milk:'optional',sizes:['Large(16oz)'],base:'4 Espresso Shots + Ice',desc:'Maximum caffeine. Four espresso shots pulled over ice. Add a splash of milk or enjoy it bold and black.',ingredients:['4 espresso shots (two double pulls)','Ice','Optional: splash of milk or syrup'],steps:['Fill a large glass completely with ice','Pull the first double espresso shot over the ice','Pull the second double espresso shot over the ice','Add a splash of milk or syrup if desired','Stir and prepare for liftoff'],source:'https://www.reddit.com/r/NinjaLuxeCafe/comments/1je4yzu/favorite_drinks/',img:'https://b4192671.smushcdn.com/4192671/wp-content/uploads/2025/10/4_shots_of_espresso_over_ice_q1nw9u39pa7wfm5zgee0_0-1024x572.png?lossy=2&strip=1&webp=1'},
+  {id:'cold-brew-lemonade',name:'Cold Brew Lemonade',type:'iced',milk:'none',sizes:['Regular(12oz)'],base:'Cold Brew + Lemonade + Ice',desc:'A surprisingly delicious combo — tart lemonade meets smooth cold brew. A barista secret that is trending.',ingredients:['4 oz cold brew','4 oz lemonade','Ice','Optional: simple syrup','Lemon slice'],steps:['Fill a glass with ice','Pour cold brew over the ice','Pour lemonade over the cold brew','Stir gently — the flavors meld beautifully','Adjust sweetness with simple syrup if needed','Garnish with a lemon slice'],source:'https://www.reddit.com/r/NinjaLuxeCafe/comments/1je4yzu/favorite_drinks/',img:'https://www.ovalware.com/cdn/shop/articles/Blog_Cold_Brew_Lemonade_00_7d7c6772-8a69-4240-8068-929683d2de11.webp?v=1784169092&width=1920'},
+  {id:'mint-latte',name:'Fresh Mint Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Fresh Mint + Milk',desc:'A garden-fresh latte with real mint leaves. Light, refreshing, and nothing like artificial peppermint.',ingredients:['Double espresso shot','6-8 fresh mint leaves','1 tbsp simple syrup','6-8 oz milk of choice'],steps:['Muddle fresh mint leaves with simple syrup in your cup','Pull a double espresso shot over the muddled mint','Let steep for 1 minute, then strain out mint leaves if desired','Froth milk on STEAMED MILK setting','Pour milk over the mint espresso','Garnish with a fresh mint sprig'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://livesimply.me/wp-content/uploads/2016/12/Homemade-Mocha-Latte-LU5A6091-3-1.jpg'},
+  {id:'coconut-latte',name:'Toasted Coconut Latte',type:'specialty',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Coconut + Milk',desc:'Tropical vibes in a cup. Coconut and espresso are a surprisingly perfect pair.',ingredients:['Double espresso shot','2 pumps coconut syrup (or 1 tbsp coconut cream)','6-8 oz milk of choice (coconut milk recommended)','Toasted coconut flakes'],steps:['Add coconut syrup to your cup','Pull a double espresso shot','Froth milk on STEAMED MILK setting (coconut milk works great here)','Pour milk over the espresso','Top with toasted coconut flakes'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://images.squarespace-cdn.com/content/v1/5aa181a3cef3726b20ede49c/1524028948205-1Y7NO0H9P0N7IS7Y4UMT/coconut-cappuccino-latte-vegan-05581.jpg'},
+  {id:'nutella-latte',name:'Nutella Latte',type:'milk',milk:'all',sizes:['Regular(12oz)','Large(16oz)'],base:'Espresso + Nutella + Milk',desc:'Real Nutella melted into espresso. Hazelnut-chocolate heaven. Indulgent and worth every calorie.',ingredients:['Double espresso shot','2 tbsp Nutella','6-8 oz milk of choice','Whipped cream','Chopped hazelnuts'],steps:['Add Nutella to your cup','Pull a double espresso shot over the Nutella','Stir vigorously until the Nutella melts completely','Froth milk on STEAMED MILK setting','Pour milk over the Nutella-espresso','Top with whipped cream and chopped hazelnuts'],source:'https://onegreatcoffee.com/blogs/latest-news/best-coffee-for-ninja-cafe-luxe-pro',img:'https://images.squarespace-cdn.com/content/v1/58e2595c3e00be0ae51453aa/1497491256551-BWQDWO7E6XK28JLFFN95/nutella-latte-recipe.jpg'},
+];
+
+const STAPLE_INGREDIENTS = [
+  {icon:'🫘',name:'Fresh Coffee Beans',desc:'Buy whole beans, grind fresh. Medium to dark roasts work best for espresso. Look for roast dates within 2-4 weeks.',tag:'Essential'},
+  {icon:'🥛',name:'Whole Milk',desc:'Froths best — creates silky microfoam. The gold standard for lattes and cappuccinos.',tag:'Essential'},
+  {icon:'🌾',name:'Oat Milk (Barista Blend)',desc:'Best plant-based milk for frothing. Oatly Barista or Califia Farms work great.',tag:'Essential'},
+  {icon:'🥜',name:'Almond Milk (Barista Edition)',desc:'Use barista editions for better frothing. Regular almond milk separates.',tag:'Dairy-Free'},
+  {icon:'🫘',name:'Soy Milk (Barista)',desc:'Froths reasonably well. Be careful not to overheat — soy scorches easily.',tag:'Dairy-Free'},
+  {icon:'🥥',name:'Coconut Milk',desc:'Thin foam but great flavor. Best used blended with other milks for texture.',tag:'Dairy-Free'},
+  {icon:'🧴',name:'Vanilla Syrup',desc:'The most versatile syrup. Sweetens and flavors any drink. Get sugar-free for low-cal options.',tag:'Syrup'},
+  {icon:'🍫',name:'Chocolate Sauce / Cocoa',desc:'Essential for mochas. Use good-quality chocolate sauce for best results.',tag:'Syrup'},
+  {icon:'🧈',name:'Caramel Sauce',desc:'For caramel macchiatos and drizzling. Look for thick dessert sauce.',tag:'Syrup'},
+  {icon:'🌰',name:'Hazelnut Syrup',desc:'Nutty, sweet flavor. Pairs beautifully with oat milk.',tag:'Syrup'},
+  {icon:'🎃',name:'Pumpkin Spice Syrup',desc:'Essential for PSLs. Buy pre-made or make your own with pumpkin puree and spices.',tag:'Syrup'},
+  {icon:'🍁',name:'Maple Syrup',desc:'Pure maple syrup (not pancake syrup). Adds rich, complex sweetness to lattes.',tag:'Sweetener'},
+  {icon:'🟤',name:'Brown Sugar',desc:'For shaken espressos and brown sugar lattes. Adds caramel depth.',tag:'Sweetener'},
+  {icon:'🍯',name:'Honey',desc:'Natural sweetener. Pairs beautifully with lavender, matcha, and chai.',tag:'Sweetener'},
+  {icon:'💧',name:'Simple Syrup',desc:'Equal parts sugar and water. Sweetens cold drinks without gritty sugar.',tag:'Sweetener'},
+  {icon:'❄️',name:'Sugar-Free Syrups',desc:'Vanilla, caramel, and hazelnut in sugar-free versions. Use for low-cal drinks.',tag:'Sweetener'},
+  {icon:'🫚',name:'Cinnamon & Spices',desc:'Cinnamon, nutmeg, cardamom, ginger, clove. Elevate any latte or steamer.',tag:'Topping'},
+  {icon:'🍪',name:'Whipped Cream',desc:'Optional but delightful on mochas, hot chocolates, and cold brews.',tag:'Topping'},
+  {icon:'🧊',name:'Ice',desc:'Essential for iced drinks. Use large cubes that melt slower for less dilution.',tag:'Essential'},
+  {icon:'🌸',name:'Lavender & Rose',desc:'Dried culinary lavender and rose water for floral specialty lattes.',tag:'Flavor'},
+  {icon:'🍵',name:'Matcha Powder',desc:'Ceremonial grade for best color and flavor. Use for matcha lattes.',tag:'Tea'},
+  {icon:'🫖',name:'Chai Concentrate',desc:'Pre-made chai concentrate for quick chai lattes and dirty chais.',tag:'Tea'},
+];
+
+const MILK_OPTIONS = [
+  {id:'whole',name:'Whole Milk',type:'dairy'},
+  {id:'oat',name:'Oat Milk',type:'plant'},
+  {id:'almond',name:'Almond Milk',type:'plant'},
+  {id:'soy',name:'Soy Milk',type:'plant'},
+  {id:'coconut',name:'Coconut Milk',type:'plant'},
+  {id:'skim',name:'Skim Milk',type:'dairy'},
+  {id:'lactosefree',name:'Lactose-Free',type:'dairy'},
+  {id:'halfnhalf',name:'Half & Half',type:'dairy'},
+];
+
+const TYPES = ['All','espresso','milk','iced','specialty','tea'];
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+
+function getFavs(){return JSON.parse(localStorage.getItem('nlcfavs')||'[]')}
+function setFavs(f){localStorage.setItem('nlcfavs',JSON.stringify(f))}
+function getRatings(){return JSON.parse(localStorage.getItem('nlcfavrating')||'{}')}
+function setRatings(r){localStorage.setItem('nlcfavrating',JSON.stringify(r))}
+function toggleFav(id){let f=getFavs();f=f.includes(id)?f.filter(x=>x!==id):[...f,id];setFavs(f);renderAll()}
+function setRating(id,r){let rt=getRatings();rt[id]=r;setRatings(rt);renderAll()}
+
+// ═══════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════
+
+function filterRecipes(query,typeFilter){
+  let q=(query||'').toLowerCase();
+  return RECIPES.filter(r=>{
+    if(typeFilter&&typeFilter!=='All'&&r.type!==typeFilter)return false;
+    if(q&&!r.name.toLowerCase().includes(q)&&!r.base.toLowerCase().includes(q)&&!r.desc.toLowerCase().includes(q))return false;
+    return true;
+  });
+}
+
+function renderRecipeCard(r){
+  let favs=getFavs();
+  let ratings=getRatings();
+  let isFav=favs.includes(r.id);
+  let rating=ratings[r.id]||0;
+  let typeEmoji={espresso:'☕',milk:'🥛',iced:'🧊',specialty:'✨',tea:'🍵',blended:'🧋',cocktail:'🍸'}[r.type]||'☕';
+  let imgUrl=r.img||'';
+  return `<div class="recipe-card" onclick="openDetail('${r.id}')">
+    ${imgUrl?`<img class="img" src="${imgUrl}" alt="${r.name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div style="aspect-ratio:4/3;background:linear-gradient(135deg,#3d2e28,#2a1e1a);display:none;align-items:center;justify-content:center;font-size:2.5rem">${typeEmoji}</div>`:`<div style="aspect-ratio:4/3;background:linear-gradient(135deg,#3d2e28,#2a1e1a);display:flex;align-items:center;justify-content:center;font-size:2.5rem">${typeEmoji}</div>`}
+    <div class="body">
+      <h3>${r.name}</h3>
+      <div class="meta"><span>${r.base}</span><span>${r.sizes[0]}</span></div>
+    </div>
+    <div class="rating">${'★'.repeat(rating)||'☆'}</div>
+    <button class="fav-btn ${isFav?'faved':''}" onclick="event.stopPropagation();toggleFav('${r.id}')">${isFav?'★':'☆'}</button>
+  </div>`;
+}
+
+function renderHome(){
+  let q=document.getElementById('searchInput')?.value||'';
+  let activeType=document.querySelector('#homeFilters .filter-chip.active')?.dataset?.type||'All';
+  
+  // Featured picks
+  const FEATURED_IDS=['latte','cappuccino','iced-latte','flat-white','cold-brew','brown-sugar-shaken','caramel-macchiato','espresso-martini','pumpkin-spice-latte','affogato'];
+  let featured=FEATURED_IDS.map(id=>RECIPES.find(r=>r.id===id)).filter(Boolean);
+  let favs=getFavs();
+  let typeEmoji={espresso:'☕',milk:'🥛',iced:'🧊',specialty:'✨',tea:'🍵',blended:'🧋',cocktail:'🍸'};
+  document.getElementById('featuredGrid').innerHTML=featured.map(r=>`
+    <div class="featured-card" onclick="openDetail('${r.id}')">
+      <div class="fc-img">${typeEmoji[r.type]||'☕'}</div>
+      <div class="fc-body">
+        <h4>${r.name}</h4>
+        <div class="fc-meta">${r.sizes[0]} · ${favs.includes(r.id)?'★':''}</div>
+      </div>
+    </div>
+  `).join('');
+  
+  document.getElementById('featuredSub').textContent=favs.length?'★ You have '+favs.length+' saved':'Popular picks to get you started';
+  
+  // Filter chips
+  let chipLabels={All:'All',espresso:'☕ Espresso',milk:'🥛 Milk',iced:'🧊 Iced',specialty:'✨ Specialty',tea:'🍵 Tea'};
+  let html=TYPES.map(t=>`<span class="filter-chip ${t===activeType?'active':''}" data-type="${t}" onclick="document.querySelectorAll('#homeFilters .filter-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active');renderHome()">${chipLabels[t]||t}</span>`).join('');
+  document.getElementById('homeFilters').innerHTML=html;
+
+  // Grid
+  let results=filterRecipes(q,activeType);
+  document.getElementById('homeGrid').innerHTML=results.map(renderRecipeCard).join('')||'<p style="color:var(--text2);text-align:center;grid-column:1/-1;padding:40px">No drinks found</p>';
+}
+
+function renderRecipes(){
+  let q=document.getElementById('recipesSearchInput')?.value||'';
+  let activeType=document.querySelector('#recipesFilters .filter-chip.active')?.dataset?.type||'All';
+  
+  let chipLabels={All:'All',espresso:'☕ Espresso',milk:'🥛 Milk',iced:'🧊 Iced',specialty:'✨ Specialty',tea:'🍵 Tea'};
+  let html=TYPES.map(t=>`<span class="filter-chip ${t===activeType?'active':''}" data-type="${t}" onclick="document.querySelectorAll('#recipesFilters .filter-chip').forEach(c=>c.classList.remove('active'));this.classList.add('active');renderRecipes()">${chipLabels[t]||t}</span>`).join('');
+  document.getElementById('recipesFilters').innerHTML=html;
+
+  let results=filterRecipes(q,activeType);
+  document.getElementById('recipesGrid').innerHTML=results.map(renderRecipeCard).join('')||'<p style="color:var(--text2);text-align:center;grid-column:1/-1;padding:40px">No drinks found</p>';
+}
+
+function renderFavorites(){
+  let favs=getFavs();
+  let el=document.getElementById('favsContent');
+  if(!favs.length){
+    el.innerHTML=`<div class="empty-state"><div class="icon">☆</div><p>No favorites yet! Tap the ☆ on any recipe to save it here.</p></div>`;
+    return;
+  }
+  let results=RECIPES.filter(r=>favs.includes(r.id));
+  el.innerHTML=`<div class="recipe-grid">${results.map(renderRecipeCard).join('')}</div>`;
+}
+
+function renderIngredients(){
+  let el=document.getElementById('stapleContent');
+  el.innerHTML=`<div class="staple-list">${STAPLE_INGREDIENTS.map(i=>`
+    <div class="staple-item">
+      <div class="icon">${i.icon}</div>
+      <div class="info">
+        <h4>${i.name}</h4>
+        <p>${i.desc}</p>
+      </div>
+      <span class="tag">${i.tag}</span>
+    </div>
+  `).join('')}</div>`;
+}
+
+function renderGuide(){
+  let el=document.getElementById('guideContent');
+  el.innerHTML=`
+    <div class="guide-section">
+      <h2>🔧 Machine Overview</h2>
+      <p>The Ninja Luxe Cafe (ES601 Premier / ES701 Pro) is a 3-in-1 intelligent espresso system with a built-in conical burr grinder, weight-based dosing, assisted tamper, and hands-free dual froth system.</p>
+      <div class="guide-card">
+        <img src="https://coffeegeek.com/wp-content/uploads/2024/10/Luxe-Cafe-Beauty-Shots-6.jpg" alt="Ninja Luxe Cafe machine" loading="lazy" onerror="this.style.display='none'">
+        <h4>Main Components</h4>
+        <p><b>1.</b> Bean Hopper (top) with 25 grind settings<br>
+        <b>2.</b> Control panel with dial, display, and buttons<br>
+        <b>3.</b> 54mm Portafilter with Double and Luxe baskets<br>
+        <b>4.</b> Assisted Tamper with built-in funnel<br>
+        <b>5.</b> Dual Froth System (milk jug with whisk)<br>
+        <b>6.</b> Removable water tank (rear)<br>
+        <b>7.</b> Cup warming tray (top)<br>
+        <b>8.</b> Built-in accessory storage</p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>🎮 Control Panel</h2>
+      <p>The control panel is the brain of the machine. Use the center dial to navigate and press to select.</p>
+      <div class="guide-card">
+        <img src="https://m.media-amazon.com/images/I/81iX43Z1kfL.jpg" alt="Ninja Luxe Cafe control panel" loading="lazy" onerror="this.style.display='none'">
+        <h4>Panel Layout</h4>
+        <p><b>Grind Area:</b> Shows current grind setting and recommended setting. Adjust the left dial.<br>
+        <b>Brew Selection:</b> ESPRESSO | COFFEE | COLD BREW buttons<br>
+        <b>Size Button:</b> Choose drink size (also used for advanced settings)<br>
+        <b>Center Dial:</b> Navigate menus, adjust settings, confirm choices<br>
+        <b>BREW Button:</b> Start/stop brewing</p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>☕ Brew Options (Complete Guide)</h2>
+      <p>Your Ninja Luxe Cafe has multiple brew modes — each optimized for a different style of drink. Here is everything each mode does, how to use it, and what settings it changes.</p>
+      
+      <div class="guide-card">
+        <h4>1. ☕ Espresso Mode</h4>
+        <p><b>What it does:</b> Pulls a standard 9-bar espresso shot through the 54mm portafilter. The machine monitors pressure and temperature in real-time via Barista Assist Technology.<br><br>
+        <b>When to use:</b> For all espresso-based drinks — straight shots, lattes, cappuccinos, americanos, macchiatos.<br><br>
+        <b>Settings:</b>
+        • <b>Basket:</b> Double (10-12g) for single shots, Luxe (18-20g) for double shots
+        • <b>Grind:</b> 6-12 (fine, recommended range shown on display)
+        • <b>Dose:</b> Auto-dosed by built-in scale (weight-based, grind until scale reaches target)
+        • <b>Tamp:</b> Assisted tamper with built-in funnel — push down until spring stops
+        • <b>Yield:</b> ~1:2 ratio (e.g., 18g in → 36g out)
+        • <b>Temperature:</b> Adjustable via h06 (Lo/Mid/Hi) in advanced settings<br><br>
+        <b>Pro tip:</b> Always preheat your cup by running a blank shot or placing it on the warming tray. The first shot of the day is always cooler — run a blank shot through the group head first to warm everything up.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4>2. 🧊 Brew Over Ice (Espresso)</h4>
+        <p><b>What it does:</b> Pulls an espresso shot optimized for pouring directly over ice. The machine adjusts the brew parameters (finer grind, slightly higher dose) to compensate for dilution from melting ice.<br><br>
+        <b>When to use:</b> For iced lattes, iced americanos, iced shaken espressos — any drink where espresso hits ice.<br><br>
+        <b>Settings:</b>
+        • <b>How to activate:</b> Place ice in cup, select ESPRESSO, then select BREW OVER ICE on the dial
+        • <b>Grind:</b> Usually 1-2 clicks finer than standard espresso
+        • <b>Basket:</b> Luxe basket recommended (18-20g)
+        • <b>Yield:</b> Similar to standard espresso but slightly more concentrated
+        • <b>Brew time:</b> Slightly longer extraction to compensate for ice dilution<br><br>
+        <b>Pro tip:</b> Don't fill the cup all the way with ice — leave room for milk or water. Use large, dense ice cubes that melt slower. Cold foam on top is the perfect finish.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4>3. ☕ Coffee — Classic Mode</h4>
+        <p><b>What it does:</b> Full drip coffee maker function brewing a standard, balanced cup. Heats water to ~195-205°F and pours it over ground coffee in a cone filter basket using gravity-fed extraction (no pressure).<br><br>
+        <b>When to use:</b> For your daily morning drip coffee, or when serving guests who prefer traditional brewed coffee.<br><br>
+        <b>Settings:</b>
+        • <b>Select:</b> COFFEE button → CLASSIC on the dial
+        • <b>Sizes:</b> 6 oz to 18 oz — press SIZE button to adjust
+        • <b>Grind:</b> 19-22 (medium, drip range)
+        • <b>Basket:</b> Uses the drip coffee filter basket — remove the portafilter and insert the filter basket
+        • <b>Brew time:</b> 2-5 minutes depending on size<br><br>
+        <b>Pro tip:</b> Use a medium roast for the most balanced classic drip coffee. Dark roasts can taste bitter with the longer extraction time of drip vs espresso.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4>4. 🔥 Coffee — Rich Mode</h4>
+        <p><b>What it does:</b> A stronger, more concentrated version of drip coffee. The Rich setting reduces the water volume while keeping the same amount of coffee grounds, producing a bolder, more intense cup with higher caffeine per ounce.<br><br>
+        <b>When to use:</b> When you want a stronger morning cup, as a base for milk-based coffee drinks (cafe au lait), or when you find Classic too weak.<br><br>
+        <b>Settings:</b>
+        • <b>Select:</b> COFFEE button → RICH on the dial
+        • <b>Sizes:</b> 6 oz to 18 oz
+        • <b>Grind:</b> 18-20 (slightly finer than Classic, still in medium range)
+        • <b>Basket:</b> Drip coffee filter basket
+        • <b>Flavor:</b> More concentrated, higher coffee-to-water ratio<br><br>
+        <b>Pro tip:</b> Rich mode makes an excellent base for a latte if you don't want to pull espresso shots — just brew Rich and add steamed milk. It's also great for iced coffee since the extra strength survives the ice dilution.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4>5. 🧊 Coffee — Over Ice Mode</h4>
+        <p><b>What it does:</b> Brews double-strength drip coffee designed to be poured directly over a full glass of ice. The resulting drink is perfectly strength-balanced once the ice melts — not watery like regular drip coffee poured over ice.<br><br>
+        <b>When to use:</b> For iced coffee (not iced lattes — those use espresso). Perfect for hot days when you want a cold brew-style drink fast.<br><br>
+        <b>Settings:</b>
+        • <b>Select:</b> COFFEE button → OVER ICE on the dial
+        • <b>Sizes:</b> 6 oz to 18 oz (brew over a cup full of ice)
+        • <b>Grind:</b> 19-22 (medium)
+        • <b>Basket:</b> Drip coffee filter basket
+        • <b>Strength:</b> Double-strength concentrate to account for ice dilution<br><br>
+        <b>Pro tip:</b> Fill your glass completely with ice before brewing. The hot coffee melts some ice and chills instantly. Add milk, cream, or sweetener to taste. Different from the espresso-based Brew Over Ice mode — this uses the drip system, not the portafilter.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4>6. 🥤 Cold Brew Mode</h4>
+        <p><b>What it does:</b> The Ninja's Rapid Cold Brew technology extracts cold brew concentrate in minutes instead of 12-24 hours. It uses the drip coffee system with cold water extraction for a smooth, low-acid concentrate.<br><br>
+        <b>When to use:</b> For smooth, low-acid cold brew concentrate. Perfect for iced coffee drinks, cold brew lattes, vanilla sweet cream cold brew, and batch prep.<br><br>
+        <b>Settings:</b>
+        • <b>Select:</b> COLD BREW button
+        • <b>Grind:</b> 23-25 (coarse — recommended range shown on display)
+        • <b>Basket:</b> Drip coffee filter basket
+        • <b>Sizes:</b> 6 oz to 18 oz
+        • <b>Brew time:</b> ~10-15 minutes (vs 12-24 hours traditional)
+        • <b>Yield:</b> Concentrated — pour over ice, dilute with water or milk to taste<br><br>
+        <b>Pro tip:</b> Cold brew concentrate keeps in the fridge for up to 2 weeks. Make a batch on Sunday and enjoy cold brew all week. Medium or dark roasts with chocolate/nutty notes work best. Add vanilla cold foam for the ultimate treat.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4>7. 🧪 Cold-Pressed Espresso Mode</h4>
+        <p><b>What it does:</b> Exclusive to Ninja — espresso extracted using cold water at high pressure instead of hot water. The result is a smooth, low-acid, naturally sweet espresso concentrate completely unique to this machine. No other home machine offers this.<br><br>
+        <b>When to use:</b> For espresso martinis (the star ingredient — mixes perfectly without heating up your cocktail), cold drinks where you want espresso flavor without heat, iced lattes with a different flavor profile, or the smoothest possible espresso shot.<br><br>
+        <b>Settings:</b>
+        • <b>Select:</b> ESPRESSO button → COLD-PRESSED on the dial
+        • <b>Grind:</b> Medium-fine (slightly coarser than standard espresso)
+        • <b>Basket:</b> Luxe basket (18-20g)
+        • <b>Brew pressure:</b> High pressure (9+ bar) using cold water
+        • <b>Temperature:</b> Cold (no heat applied during extraction)
+        • <b>Flavor profile:</b> Sweeter, less bitter, lower acidity — like a cross between espresso and cold brew<br><br>
+        <b>Pro tip:</b> Also amazing over ice with a splash of oat milk. The cold-pressed shot is less acidic, so it's easier on your stomach if you're sensitive to hot espresso.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4>8. 🔥 Quad Espresso</h4>
+        <p><b>What it does:</b> Pulls four shots of espresso in sequence for maximum caffeine. The machine doses and pulls two double shots back-to-back automatically.<br><br>
+        <b>When to use:</b> When you need a serious caffeine boost, for large iced drinks that need extra espresso strength, or as a base for sharing.<br><br>
+        <b>Settings:</b>
+        • <b>Select:</b> ESPRESSO button → QUAD on the dial
+        • <b>Grind:</b> 6-12 (fine, standard espresso range)
+        • <b>Basket:</b> Luxe basket (18-20g) — machine will pull twice
+        • <b>Yield:</b> ~4 oz total (four shots)
+        • <b>Best for:</b> Large iced lattes, quad-shot Americanos, or splitting between two cups<br><br>
+        <b>Pro tip:</b> Quad espresso is intense — 4 shots = roughly 400mg caffeine. Best reserved for large 16oz+ drinks or when you really need the boost.</p>
+      </div>
+
+      <div class="guide-card">
+        <h4>8. 📊 Brew Options Quick Reference</h4>
+        <p>
+        <b>Espresso:</b> Hot | 9-bar pressure | Fine grind (6-12) | 25-35 sec<br>
+        <b>Quad:</b> Hot | 9-bar | Fine grind | 4 shots back-to-back<br>
+        <b>Cold-Pressed:</b> Cold | 9+ bar | Med-fine | ~30 sec — <b>Ninja exclusive</b><br>
+        <b>Coffee Classic:</b> Hot | Gravity | Medium (19-22) | 2-5 min<br>
+        <b>Coffee Rich:</b> Hot | Gravity | Medium (18-20) | Stronger ratio<br>
+        <b>Coffee Over Ice:</b> Hot | Gravity | Medium | Double-strength<br>
+        <b>Cold Brew:</b> Cold | Gravity | Coarse (23-25) | 10-15 min</p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>🫘 Built-in Grinder</h2>
+      <p>The conical burr grinder has 25 settings. The machine recommends the optimal setting for your drink.</p>
+      <div class="guide-card">
+        <h4>Grind Settings Guide</h4>
+        <p><b>1-5:</b> Very Fine (Turkish, some espresso)<br>
+        <b>6-12:</b> Fine (Espresso — recommended range)<br>
+        <b>13-18:</b> Medium-Fine (AeroPress, some drip)<br>
+        <b>19-22:</b> Medium (Drip coffee)<br>
+        <b>23-25:</b> Coarse (Cold brew, French Press)</p>
+      </div>
+      <div class="guide-card">
+        <h4>Barista Assist Technology</h4>
+        <p>When you select a drink, the display shows the recommended grind size. Adjust the left dial to match. The machine monitors brew pressure and temperature in real-time for perfect extraction.</p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>🥛 Dual Froth System</h2>
+      <p>Hands-free frothing — just fill the jug, select your setting, and let the machine do the work.</p>
+      <div class="guide-card">
+        <img src="https://cdn.mos.cms.futurecdn.net/hz9KvEhLjpWyKmAN8odkLc.jpg" alt="Milk frothing" loading="lazy" onerror="this.style.display='none'">
+        <h4>Froth Settings</h4>
+        <p><b>🧊 Cold Foam:</b> Thick, pourable cold foam for iced drinks. Unique to Ninja.<br>
+        <b>🥛 Steamed Milk:</b> Silky microfoam for lattes and flat whites.<br>
+        <b>☁️ Thin Froth:</b> Light, airy foam for gentle topping.<br>
+        <b>☁️☁️ Thick Froth:</b> Dense, stiff foam for cappuccinos.</p>
+      </div>
+      <div class="guide-card">
+        <h4>Milk Tips</h4>
+        <p><b>Dairy:</b> Whole milk froths best. Skim makes more foam but is less creamy.<br>
+        <b>Oat:</b> Barista blends (Oatly, Califia Farms) froth very well.<br>
+        <b>Almond:</b> Barista editions only — regular almond milk will not froth well.<br>
+        <b>Soy:</b> Can froth but be careful not to overheat (scorches easily).<br>
+        <b>Coconut:</b> Thin foam, best used in small amounts mixed with other milk.</p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>📐 Brew Baskets</h2>
+      <p>The machine comes with two precision 54mm baskets.</p>
+      <div class="guide-card">
+        <h4>Double Basket</h4>
+        <p>Holds 10-12g of ground coffee. Use for single espresso shots or smaller drinks.</p>
+      </div>
+      <div class="guide-card">
+        <h4>Luxe Basket</h4>
+        <p>Holds 18-20g of ground coffee. Use for double espresso shots and all milk drinks. This is what you will use most often.</p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>⚙️ Advanced Settings</h2>
+      <p>Hold the SIZE button for 3 seconds to enter advanced settings. Rotate the center dial to navigate.</p>
+      <div class="guide-card">
+        <h4>Brew Temperature (h06)</h4>
+        <p>Navigate to <b>h06</b>, press to select, then choose:<br>
+        <b>Lo:</b> Lower temp (light roasts)<br>
+        <b>Mid:</b> Medium (default, works for most)<br>
+        <b>Hi:</b> Higher temp (dark roasts)</p>
+      </div>
+      <div class="guide-card">
+        <h4>Other Advanced Settings</h4>
+        <p><b>h00:</b> Language selection<br>
+        <b>h01:</b> Water hardness setting<br>
+        <b>h03:</b> Auto-shutoff timer<br>
+        <b>h05:</b> Scale calibration<br>
+        <b>h07:</b> Temperature unit (°C/°F)<br>
+        <b>h08:</b> Factory reset</p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>🧼 Cleaning & Maintenance</h2>
+      <div class="guide-card">
+        <h4>Daily</h4>
+        <p>Rinse the milk jug and whisk. Wipe the drip tray. Run a blank water shot through the group head.</p>
+      </div>
+      <div class="guide-card">
+        <h4>Weekly</h4>
+        <p>Remove and clean the portafilter and baskets with warm soapy water. Wipe the grinder burr area with a brush.</p>
+      </div>
+      <div class="guide-card">
+        <h4>Monthly</h4>
+        <p>Run the cleaning cycle with a cleaning tablet. Descale when prompted using the included descaling powder.</p>
+      </div>
+      <div class="guide-card">
+        <h4>Replacement Parts</h4>
+        <p><b>Water Filter:</b> Replace every 3 months if using the water filter.<br>
+        <b>Cleaning Disc:</b> Used with cleaning tablets for the cleaning cycle.<br>
+        <b>Descaling:</b> Use Ninja descaling powder. The machine will prompt you when needed.</p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>❓ Troubleshooting</h2>
+      <div class="guide-card">
+        <h4>"Add Beans" Error</h4>
+        <p>The hopper is empty or beans are bridging. Check and refill, then tap the hopper gently.</p>
+      </div>
+      <div class="guide-card">
+        <h4>Choked Shot / No Flow</h4>
+        <p>Grind is too fine. Increase the grind setting (coarser) by 2-3 numbers and try again.</p>
+      </div>
+      <div class="guide-card">
+        <h4>"Install Funnel" Message</h4>
+        <p>The dosing collar/funnel must be attached to the portafilter before grinding. Attach it properly.</p>
+      </div>
+      <div class="guide-card">
+        <h4>Missing Grind Option</h4>
+        <p>Make sure the dosing collar is on the portafilter and the portafilter is properly inserted.</p>
+      </div>
+      <div class="guide-card">
+        <h4>Weak Espresso / No Crema</h4>
+        <p>Grind finer (lower number), check bean freshness, ensure 9-bar pressure. Try using the Luxe basket for a proper dose.</p>
+      </div>
+      <div class="guide-card">
+        <h4>Milk Not Frothing</h4>
+        <p>Check that the whisk is properly installed in the milk jug lid. Make sure you have at least the minimum fill line. Plant-based milks: use barista editions for best results.</p>
+      </div>
+    </div>
+
+    <div class="guide-section">
+      <h2>📝 Pro Tips</h2>
+      <div class="guide-card">
+        <p>☕ <b>Preheat your cup</b> — rinse with hot water or place on the warming tray for a hotter drink.<br><br>
+        🫘 <b>Use fresh beans</b> — espresso is unforgiving of stale coffee. Buy beans with a roast date within 2-4 weeks.<br><br>
+        ⚖️ <b>Trust the scale</b> — the built-in scale is very accurate. Let it measure your dose automatically.<br><br>
+        🧊 <b>Cold foam is unique</b> — Ninja\'s cold foam feature is not available on most machines. Use it on iced lattes and cold brew for a cafe-quality touch.<br><br>
+        🔄 <b>Season your grinder</b> — run a few shots of cheaper beans through a new machine to season the burrs before using your good coffee.<br><br>
+        💧 <b>Filtered water matters</b> — good water = good coffee. Use filtered or bottled water for best flavor.<br><br>
+        🌡️ <b>Temp matters</b> — lighter roasts like higher temps (Hi), darker roasts prefer lower temps (Lo). Adjust h06 accordingly.<br><br>
+        📏 <b>Dial in your espresso</b> — aim for a 1:2 ratio (18g in → 36g out) in 25-30 seconds for optimal extraction.</p>
+      </div>
+    </div>
+  `;
+}
+
+// ═══════════════════════════════════════════════
+// DETAIL VIEW
+// ═══════════════════════════════════════════════
+
+function openDetail(id){
+  let r=RECIPES.find(x=>x.id===id);
+  if(!r)return;
+  let ratings=getRatings();
+  let rating=ratings[r.id]||0;
+  
+  let typeEmoji={espresso:'☕',milk:'🥛',iced:'🧊',specialty:'✨',tea:'🍵',blended:'🧋',cocktail:'🍸'}[r.type]||'☕';
+  let milkNote=r.milk==='none'?'No milk needed':r.milk==='all'?'Any milk type works':r.milk==='optional'?'Milk optional':'Milk recommended';
+  let milkSelect='',sizeSelect='';
+  
+  if(r.milk!=='none'){
+    milkSelect=`<div style="margin-bottom:8px;font-size:.8rem;color:var(--text2)">Select your milk:</div><div class="milk-selector" id="milkSelector-${r.id}">${MILK_OPTIONS.map(m=>`<span class="milk-btn ${m.id==='whole'?'active':''}" data-milk="${m.id}" onclick="selectMilk('${r.id}','${m.id}')">${m.name}</span>`).join('')}</div><div id="milkStatus-${r.id}" style="font-size:.8rem;color:var(--accent);margin-bottom:12px">🥛 Selected: <b>Whole Milk</b></div>`;
+  }
+  if(r.sizes.length>1){
+    sizeSelect=`<div style="margin-bottom:8px;font-size:.8rem;color:var(--text2)">Select size:</div><div class="size-selector">${r.sizes.map((s,i)=>`<span class="size-btn ${i===0?'active':''}" onclick="document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${s}</span>`).join('')}</div>`;
+  }
+  
+  let imgHtml=r.img?`<img class="detail-img" src="${r.img}" alt="${r.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div style="aspect-ratio:16/9;background:linear-gradient(135deg,#3d2e28,#2a1e1a);border-radius:16px;display:none;align-items:center;justify-content:center;font-size:4rem;margin-bottom:16px">${typeEmoji}</div>`:`<div style="aspect-ratio:16/9;background:linear-gradient(135deg,#3d2e28,#2a1e1a);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:4rem;margin-bottom:16px">${typeEmoji}</div>`;
+  
+  let html=`
+    ${imgHtml}
+    <h1 class="detail-title">${r.name}</h1>
+    <div class="detail-meta">
+      <span>${typeEmoji} ${r.type}</span>
+      <span>${r.base}</span>
+      <span>${r.sizes[0]}${r.sizes.length>1?' +':''}</span>
+    </div>
+    ${sizeSelect}
+    ${milkSelect}
+    <div class="detail-rating">
+      ${[1,2,3,4,5].map(s=>`<span class="star ${s<=rating?'active':''}" onclick="setRating('${r.id}',${s})">★</span>`).join('')}
+      <span style="font-size:.75rem;color:var(--text2);margin-left:8px;align-self:center">Tap to rate</span>
+    </div>
+    <p style="color:var(--text2);font-size:.88rem;margin-bottom:20px;line-height:1.7">${r.desc}</p>
+    <div class="detail-section">
+      <h3>🛒 Ingredients</h3>
+      <ul>${r.ingredients.map(i=>`<li>${i}</li>`).join('')}</ul>
+    </div>
+    <div class="detail-section">
+      <h3>👨‍🍳 Instructions</h3>
+      <ol>${r.steps.map(i=>`<li>${i}</li>`).join('')}</ol>
+    </div>
+    <div class="detail-section">
+      <h3>🥛 Milk Note</h3>
+      <p style="color:var(--text2);font-size:.85rem">${milkNote}${r.milk!=='none'?' — select your milk above to adjust the recipe. Different milks froth differently; barista blends work best.':''}</p>
+    </div>
+    ${r.source?`<a class="source-link" href="${r.source}" target="_blank" rel="noopener">📄 View Source</a>`:''}
+  `;
+  document.getElementById('detailContent').innerHTML=html;
+  showPage('detail');
+  history.pushState({detail:r.id},'',`#${r.id}`);
+}
+
+function closeDetail(){history.back()}
+
+// Milk selector — updates active state and shows selected milk
+const MILK_TIPS = {
+  whole:'🥛 Whole milk froths beautifully — rich microfoam, great for lattes & cappuccinos',
+  oat:'🌾 Oat milk (barista blend) froths very well — creamy, slightly sweet, great in lattes',
+  almond:'🥜 Almond milk (barista) froths moderately — lighter texture, nutty flavor',
+  soy:'🫘 Soy milk froths well but watch the temp — can scorch above 150°F',
+  coconut:'🥥 Coconut milk gives thin foam — best blended with another milk',
+  skim:'🥛 Skim milk makes the most foam but is less creamy — good for cappuccinos',
+  lactosefree:'🥛 Lactose-free froths similar to whole — slightly thinner texture',
+  halfnhalf:'🧴 Half & Half is too thick to froth alone — use in breve lattes, not for foam'
+};
+function selectMilk(recipeId, milkId){
+  // Update button active states
+  document.querySelectorAll(`#milkSelector-${recipeId} .milk-btn`).forEach(b=>b.classList.remove('active'));
+  let btn=document.querySelector(`#milkSelector-${recipeId} .milk-btn[data-milk="${milkId}"]`);
+  if(btn)btn.classList.add('active');
+  // Update status display
+  let status=document.getElementById(`milkStatus-${recipeId}`);
+  if(status){
+    let milkName=MILK_OPTIONS.find(m=>m.id===milkId)?.name||milkId;
+    let tip=MILK_TIPS[milkId]||'';
+    status.innerHTML=`🥛 Selected: <b>${milkName}</b> <span style="color:var(--text2);font-weight:normal;display:block;font-size:.75rem;margin-top:4px">${tip}</span>`;
+  }
+}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+  let navLink=document.querySelector(`nav a[data-page="${name}"]`);
+  if(navLink)navLink.classList.add('active');
+  
+  if(name==='home')renderHome();
+  if(name==='recipes')renderRecipes();
+  if(name==='favorites')renderFavorites();
+  if(name==='ingredients')renderIngredients();
+  if(name==='guide')renderGuide();
+  
+  window.scrollTo(0,0);
+}
+
+function renderAll(){
+  let active=document.querySelector('.page.active');
+  if(!active)return;
+  let name=active.id.replace('page-','');
+  if(name==='home')renderHome();
+  if(name==='recipes')renderRecipes();
+  if(name==='favorites')renderFavorites();
+  if(name==='detail'){/* don't re-render detail */};
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+
+// Handle back button for detail view
+window.addEventListener('popstate',()=>{
+  let visible=document.querySelector('.page.active');
+  if(visible&&visible.id==='page-detail')showPage('home');
+});
+
+// Nav click handler — delegates all nav link clicks
+document.addEventListener('click',function(e){
+  let link=e.target.closest('nav a');
+  if(!link)return;
+  e.preventDefault();
+  let page=link.getAttribute('data-page');
+  if(page)showPage(page);
+});
+
+// Handle hash for direct recipe linking
+if(window.location.hash){
+  let id=window.location.hash.substring(1);
+  let r=RECIPES.find(x=>x.id===id);
+  if(r)openDetail(id);
+  else showPage('home');
+} else {
+  renderHome();
+}
+</script>
+</body>
+</html>
